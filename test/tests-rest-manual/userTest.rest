@@ -1,0 +1,52 @@
+POST http://localhost:8095/user/signup
+Content-Type: application/json 
+
+{
+    "username" : "tochiamanze",
+    "email" : "cdon@gmail.com",
+    "password" : "tochi12345"
+}
+
+###
+
+POST http://localhost:8095/user/login
+Content-Type: application/json 
+
+{
+    "username" : "tochiamanze",
+    "password" : "tochi12345"
+}
+
+###
+GET http://localhost:8095/user/getAll
+Content-Type: application/json
+
+###
+
+POST http://localhost:8095/user/editUser
+Content-Type: application/json 
+
+{
+    "userId" : "635ab8dfc407faf9f73deaf2",
+    "username" : "Tochi Edit",
+    "password" : "dwwrwr"
+}
+
+###
+GET  http://localhost:8095/user/getUserById
+Content-Type: application/json 
+
+{
+    "userId" : "635ab8dfc407faf9f73deaf1"
+}
+
+###
+GET  http://localhost:8095/user/getUserById
+Content-Type: application/json 
+
+{
+    "userId" : "634edb2a16710b2cda6fb370"
+}
+
+###
+POST  http://localhost:8095/user/deleteAll

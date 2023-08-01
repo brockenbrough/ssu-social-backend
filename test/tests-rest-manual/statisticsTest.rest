@@ -1,0 +1,35 @@
+GET http://localhost:8095/statistics/likes
+Content-Type: application/json
+###
+
+GET http://localhost:8095/statistics/views
+Content-Type: application/json
+###
+POST http://localhost:8095/statistics/likes
+Content-Type: application/json
+Accept: application/json
+
+{
+    userId : "teste",
+    postId : "uhasuhas"
+}
+###
+
+POST http://localhost:8095/statistics/view
+Content-Type: application/json
+
+{
+    "userID": "Joseph",
+    "postID": "123456789"
+}
+###
+GET http://localhost:8095/statistics/likes
+Content-Type: application/json
+###
+
+GET http://localhost:8095/statistics/views
+Content-Type: application/json
+###
+DELETE http://localhost:8095/statistics/Joseph/likes/123456789
+
+###

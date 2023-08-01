@@ -1,0 +1,13 @@
+
+POST http://localhost:8095/project_notes/contributor/add 
+Content-Type: application/json
+
+{
+      "name": "Jose",
+      "position":"Front End Dev",
+      "level":"One"
+}
+
+###
+GET http://localhost:8095/project_notes/contributor
+Content-Type: application/json

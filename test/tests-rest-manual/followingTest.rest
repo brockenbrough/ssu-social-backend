@@ -1,0 +1,33 @@
+###
+GET http://localhost:8095/following
+Content-Type: application/json
+
+###
+GET http://localhost:8095/followers
+Content-Type: application/json
+
+###
+POST http://localhost:8095/followers/follow
+Content-Type: application/json 
+
+{
+    "userId" : "viky11",
+    "targetUserId" : "p_kaur"
+}
+
+###
+POST http://localhost:8095/followers/unfollow
+Content-Type: application/json 
+
+{
+    "userId" : "John",
+    "targetUserId" : "Jerry"
+}
+
+###
+GET http://localhost:8095/followers/Bryan
+Accept: application/json 
+
+###
+GET http://localhost:8095/following/Jackson
+Accept: application/json 

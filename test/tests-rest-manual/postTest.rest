@@ -1,0 +1,39 @@
+
+//Get All the Posts
+GET http://localhost:8095/posts/getAllPosts
+Content-Type: application/json
+
+//Get a post by postId
+###
+GET http://localhost:8095/posts/getPostById/:postId
+Content-Type: application/json
+
+
+//Get all posts from a username
+###
+GET http://localhost:8095/posts/getAllByUsername/:username
+Content-Type: application/json
+
+//Create a Post
+###
+POST http://localhost:8095/posts/createPost
+Content-Type: application/json 
+
+{
+    "username" : "Dog 2",
+    "content": "I am a testing body in .rest"
+    
+}
+
+//Delete a Post
+###
+DELETE http://localhost:8095/posts/deletePost/:id
+Content-Type: application/json 
+
+
+//Update a Post
+###
+PUT http://localhost:8095/posts/updatePost/:id
+Accept: application/json 
+
+###

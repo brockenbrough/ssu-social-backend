@@ -1,0 +1,15 @@
+### Full feed returned
+get http://localhost:8095/feed
+###
+### Full feed returned for logged in user
+get http://localhost:8095/feed/viky11
+###
+### Paginated feed returned (page 1)
+get http://localhost:8095/feed/0/5
+###
+### Paginated feed returned (page 2)
+get http://localhost:8095/feed/5/5
+###
+### Full feed returned for logged in user
+get http://localhost:8095/feed/63613ff65c27261c8c9e1f29
+###
