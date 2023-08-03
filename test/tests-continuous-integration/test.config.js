@@ -1,4 +1,10 @@
-// test.config.js
+//
+// This file is used to configure the test environment for continuous integration.
+// Instead of using the actual database, we use an in-memory database.
+// We still must make sure that the environmental variable ACCESS_TOKEN_SECRET is set. 
+// This is done by (1) using the dotenv package and the .env file OR (2) setting the environmental 
+// variable in the CI/CD pipeline.
+
 
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
