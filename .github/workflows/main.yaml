@@ -5,11 +5,6 @@ on:
     branches: [ main ]
 
 jobs:
-  job1:
-  job2:
-    needs: job1
-  job3:
-    needs: [job1, job2]
 
   test:
 
@@ -39,4 +34,15 @@ jobs:
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
 
+          
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
 
+    steps:
+     - name: Deploy to production
+       uses: johnbeynon/render-deploy-action@v0.0.8
+       with:
+        serviceid: ${{ secrets.SERVICE_ID }}  
+        api-key: ${{ secrets.RENDER_API_KEY }}  
