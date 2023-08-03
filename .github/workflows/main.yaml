@@ -39,9 +39,4 @@ deploy:
   needs: [test]
   runs-on: ubuntu-latest
 
-  steps:
-    - name: Deploy to production
-    uses: johnbeynon/render-deploy-action@v0.0.8
-    with:
-      serviceid: ${{ secrets.SERVICE_ID }}  # Create your service ID at https://dashboard.render.com/web/serviceid
-      api-key: ${{ secrets.RENDER_API_KEY }}  # Create your API key at Render > Account Settings > API Keys> 
+  
