@@ -11,7 +11,7 @@ jobs:
   job3:
     needs: [job1, job2]
 
-   test:
+  test:
 
     name: Test
     runs-on: ubuntu-latest
