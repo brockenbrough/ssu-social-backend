@@ -32,3 +32,4 @@ jobs:
           npm test
         env:
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          ATLAS_URI: ${{ secrets.ATLAS_URI }}
