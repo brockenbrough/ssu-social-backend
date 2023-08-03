@@ -34,9 +34,9 @@ jobs:
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
 
-deploy:
-  name: Deploy
-  needs: [test]
-  runs-on: ubuntu-latest
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
 
   
