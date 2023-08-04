@@ -28,7 +28,7 @@ app.use(require('./routes/users/user.deleteall'))
 // get driver connection
 const connectDB = require("./db/conn");
  
-console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`The node environment is: ${process.env.NODE_ENV}`);
 
 // Production environment: connect to the database and start listening for requests
 if (process.env.NODE_ENV !== "test") {
