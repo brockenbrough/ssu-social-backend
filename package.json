@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "npm run test:projectNotes && npm run test:feed",
+    "test": "cross-env NODE_ENV=test npm run test:projectNotes && cross-env NODE_ENV=test npm run test:feed",
     "test:projectNotes": "mocha test/tests-continuous-integration/projectNotesApiTests.js",
     "test:feed": "mocha test/tests-continuous-integration/feedApiTests.js"
   },
@@ -29,6 +29,7 @@
   "devDependencies": {
     "chai": "^4.3.7",
     "chai-http": "^4.4.0",
+    "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
     "supertest": "^6.3.3"
   }

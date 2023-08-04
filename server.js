@@ -28,11 +28,11 @@ app.use(require('./routes/users/user.deleteall'))
 // get driver connection
 const connectDB = require("./db/conn");
  
-// Connect database.
-connectDB();
+console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 
-// Conditionally start the server only if not in test mode
+// Production environment: connect to the database and start listening for requests
 if (process.env.NODE_ENV !== "test") {
+    connectDB();
     app.listen(port, () => {
       setTimeout(() => {
         console.log(`All services are running on port: ${port}`);
