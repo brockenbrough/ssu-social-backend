@@ -31,7 +31,7 @@ describe('ProjectNotes API Tests', () => {
         .request(app)
         .get('/project_notes/contributor')
         .end((err, res) => {
-          expect(res).to.have.status(200);
+          expect(res).to.have.status(201);
           expect(res.body).to.be.an('array');
           done();
         });
