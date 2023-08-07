@@ -4,6 +4,14 @@ const cors = require("cors");
 require("dotenv").config({ path: "./.env" });
 const port = process.env.PORT || 8095;
 
+// Swagger dependencies
+const swaggerUi = require("swagger-ui-express");
+const yaml = require("yamljs");
+
+// Set up swaager
+const swaggerDefinition = yaml.load("./docs/swagger.yaml");
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+
 app.use(cors());
 app.use(express.json());
 app.use(require("./routes/project_notes"));

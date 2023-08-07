@@ -1,0 +1,157 @@
+# See https://github.com/sspangsberg/mongo_mongoose_nodejs_api/blob/main/swagger.yaml for 
+# a more complete example of a Swagger file.
+# Be very careful with indentation in this file. It is very sensitive to indentation errors.
+# You may want to try an online YAML validator if you get errors when running swagger-ui-express.
+# See https://www.youtube.com/watch?v=O0R-L8PbP-4 for a video on this topic.
+# See https://swagger.io/docs/specification/2-0/basic-structure/ for a description of the Swagger file structure.
+
+openapi: 3.0.0
+info:
+  title: SSU SOCIAL API
+  description: MongoDB ExpressJS NodeJS REST API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8095/
+    description: Localhost development server 
+  - url: https://ssu-social-app-api.onrender.com/
+    description: Render remote server
+components:
+  securitySchemes:
+    ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: auth-token
+
+  schemas:
+    Comment:
+      type: object
+      properties:
+        username:
+          type: string
+        replies:
+          type: array
+          items:
+            type: string
+        date:
+          type: string
+
+    Contributor:
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: string
+        level:
+          type: string
+          
+    Follower:
+      type: object
+      properties:
+        userId:
+          type: string
+        followers:
+          type: array
+          items:
+            type: string
+
+    Following:
+      type: object
+      properties:
+        userId:
+          type: string
+        following:
+          type: array
+          items:
+            type: string
+
+    Like:
+      type: object
+      properties:
+        userId:
+          type: string
+        postId:
+          type: string
+        date:
+          type: date
+
+    Post:
+      type: object
+      properties:
+        username:
+          type: string
+        content:
+          type: string
+
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        date:
+          type: date
+       
+    View:
+      type: object
+      properties:
+        userId:
+          type: string
+        postId:
+          type: string
+
+
+    
+
+paths:
+
+  /user/login:
+    post:
+      summary: Login a User
+      description: Login a User in order to get JWT token (auth-token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      
+      responses:
+        200:
+          description: User logged in succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  data:
+                    type: string
+
+
+  /posts/getAllPosts:
+    get:
+      summary: Retrieves all posts.
+      description: Retrieves a list of posts as JSON objects.
+      responses:
+        200:
+          description: A list of posts JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+
+  
+
