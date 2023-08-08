@@ -34,9 +34,9 @@ projectNotesRoutes.put('/project_notes/contributor/update/:id', (req, res) => {
     );
 });
 
-projectNotesRoutes.delete('/project_notes/contributor/:id', (req, res) => {
+projectNotesRoutes.delete('/project_notes/contributor/delete/:id', (req, res) => {
   Developer.findByIdAndRemove(req.params.id, req.body)
-    .then(developer => res.json({ mgs: ' entry deleted successfully' }))
+    .then(developer => res.json({ msg: ' entry deleted successfully' }))
     .catch(err => res.status(404).json({ error: 'No such developer' }));
 });
 
