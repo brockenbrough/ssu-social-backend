@@ -73,7 +73,7 @@ components:
         postId:
           type: string
         date:
-          type: date
+          type: string
 
     Post:
       type: object
@@ -93,7 +93,7 @@ components:
         password:
           type: string
         date:
-          type: date
+          type: string
        
     View:
       type: object
@@ -166,20 +166,87 @@ paths:
                   type: string
                 password:
                   type: string
+
+  /user/signup:
+    post:
+      summary: Create a user.
+      tags:
+        - User
+      description: Create a User.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
       
       responses:
         200:
-          description: User logged in succesfully
+          description: Returns the created user.
           content:
             application/json:
               schema:
+                $ref: "#/components/schemas/User"
+
+
+  /user/login:
+    post:
+      summary: Login a user.
+      tags:
+        - User
+      description: Login a User in order to get JWT token (auth-token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+
+  /user/editUser:
+    post:
+      summary: Edit a user.
+      tags:
+        - User
+      description: Edit an existing user identified by MongoDB id.  Or does it??? Seems broken.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      
+      responses:
+        200:
+          description: Returns the authorization access token in thr header.
+          content:
+              application/json:
+              schema:
                 type: object
                 properties:
-                  error:
+                  accessToken:
                     type: string
-                  data:
-                    type: string
-                    
+
   /user/deleteAll:
     post:
       summary: Deletes all users.
