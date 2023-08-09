@@ -284,6 +284,361 @@ paths:
                 items:
                   $ref: "#/components/schemas/Post"
 
+#
+# Project Notes
+#
+  /project_notes/contributor:
+    get:
+      summary: Retrieves all contributors.
+      tags:
+        - Project Notes
+      description: Retrieves all contributors as JSON objects.
+      responses:
+        200:
+          description: A list of contributors JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contributor"
 
-  
+  /project_notes/contributor/{id}:
+    get:
+      summary: Get specific user.
+      description: Retrieves a user by collection entry id.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: The Contributor in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/add:
+    post:
+      summary: Create a contributor.
+      tags:
+        - Project Notes
+      description: Create a contributor.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns the created contributor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/delete/{id}:
+    delete:
+      summary: Deletes the contributor.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Deletes the contributor with the given MongoDB id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns a message about the success of the operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+
+  /project_notes/contributor/{id}:
+    get:
+      summary: Get specific user.
+      description: Retrieves a user by collection entry id.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: The Contributor in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/add:
+    post:
+      summary: Create a contributor.
+      tags:
+        - Project Notes
+      description: Create a contributor.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns the created contributor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/update/{id}:
+    put:
+      summary: Updates the contributor.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Updates the contributor with the given MongoDB id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns the created contributor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+#
+# Likes
+#
+  /like-list:
+    get:
+      summary: Retrieves all likes.
+      tags:
+        - Likes
+      description: Retrieves all likes as JSON objects.
+      responses:
+        200:
+          description: A list of likes JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Like"
+
+  /user-likes/{id}:
+    get:
+      summary: Retrieves all likes for gvine user.
+      tags:
+        - Likes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Retrieves all likes as JSON objects for user with given MongoDB id.
+      responses:
+        200:
+          description: A list of likes JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Like"
+
+  /count/likes-by-user/{id}:
+    get:
+      summary: Counts the number of posts a user liked.
+      tags:
+        - Likes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Counts all likes made by a user with given MongoDB id.
+      responses:
+        200:
+          description: The number of likes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numberLiked:
+                    type: integer
+
+  /count/likes-for-post/{id}:
+    get:
+      summary: Counts all likes for given post.
+      tags:
+        - Likes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id for post
+          schema:
+            type: string
+      description: Counts all likes for the given post.
+      responses:
+        200:
+          description: Number of likes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numberLiked:
+                    type: integer
+
+  /likes/like:
+    post:
+      summary: Create a like of a post.
+      tags:
+        - Likes
+      description: Create a liking of a post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        200:
+          description: Returns the created like.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Like"
+
+  /likes/unLike:
+    delete:
+      summary: Deletes the given like.
+      tags:
+        - Likes
+      description: Deletes the contributor with the given MongoDB user id, post id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        200:
+          description: Returns the number of likes deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deletedCount:
+                    type: integer
+
+#
+# Views
+#
+  /views/view:
+    post:
+      summary: Create a view of a post.
+      tags:
+        - Views
+      description: Create a viewing of a post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        200:
+          description: Returns the created view.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/View"
+
 

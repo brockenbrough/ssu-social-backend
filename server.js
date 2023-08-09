@@ -33,7 +33,6 @@ app.use(require('./routes/users/user.editUser'))
 app.use(require('./routes/users/user.deleteall'))
 app.use(require('./routes/statistics'))
 
-y
 // get driver connection
 const connectDB = require("./db/conn");
  
