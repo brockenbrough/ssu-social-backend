@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const newPostModel = require('../../models/postModel')
 
-router.get("/post/getPostById/:postId", async (req, res) => {
+router.get("/posts/getPostById/:postId", async (req, res) => {
   const { postId } = req.params
 
   newPostModel.findById(req.params.postId, req.body)

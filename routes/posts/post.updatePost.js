@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const newPostModel = require('../../models/postModel')
 
-router.put("/post/updatePost/:postId", async (req, res) => { 
+router.put("/posts/updatePost/:postId", async (req, res) => { 
     const { postId } = req.params
 
     const updatePost = newPostModel.findByIdAndUpdate(req.params.postId, req.body)
