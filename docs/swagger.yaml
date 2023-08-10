@@ -284,6 +284,28 @@ paths:
                 items:
                   $ref: "#/components/schemas/Post"
 
+  /posts/getPostById/{postId}:
+    get:
+      summary: Get post with given id.
+      description: Retrieves the post as a JSON objects.
+      tags:
+        - Post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: The MongoDB id of the post.
+          schema:
+            type: string
+      responses:
+        200:
+          description: The post.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
 
   /posts/getAllByUsername/{username}:
     get:
@@ -307,6 +329,52 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Post"
+
+
+  /posts/updatePost/{postId}:
+    put:
+      summary: Get post with given id.
+      tags:
+        - Post
+      description: Updates the post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                content:
+                  type: string
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: The MongoDB id of the post.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returned on success.
+
+  /posts/deletePost/{postId}:
+    delete:
+      summary: Deletes the given post.
+      tags:
+        - Post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: The MongoDB id of the post.
+          schema:
+            type: string
+      description: Deletes the post.
+      responses:
+        200:
+          description: Returned on success.
 
 #
 # Feed
@@ -346,6 +414,30 @@ paths:
           description: total number of posts returned.
           schema:
             type: integer
+      responses:
+        200:
+          description: A list of posts JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+
+  /feed/{username}:                
+    get:
+      summary: Retrieves a list of posts that is appropriate for a given user.
+      description: Retrieves a list of posts as JSON objects.  The posts are sorted to present posts with higher likes and views first.
+      tags:
+        - Feed
+      parameters:
+        - in: path
+          name: username
+          required: true
+          description: username.
+          schema:
+            type: string
       responses:
         200:
           description: A list of posts JSON objects in an array.

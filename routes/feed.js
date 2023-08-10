@@ -149,11 +149,11 @@ router
   });
 
 //returns sorted feed for the loged in user
-router.route("/feed/:userId").get(async function (req, res) {
+router.route("/feed/:username").get(async function (req, res) {
   //shows the feed
-  const userId = req.params.userId;
+  const userId = req.params.username;
   const allUserId = await getAllUserIds();
-  const following = await getFollowing(userId);
+  const following = await getFollowing(username);  //ERROR! getFollowing takes userid not username!
 
   let postIDs = [];
   let userIdList = [];
@@ -163,14 +163,14 @@ router.route("/feed/:userId").get(async function (req, res) {
     userIdList[i] = allUserId[i].username;
   }
 
-  if (!userIdList.includes(userId)) {
-    return res.status(400).send("Error: invalid user ID");
+  if (!userIdList.includes(username)) {
+    return res.status(400).send("Error: invalid username");
   }
 
   if (following[0] == null) {
     return res
       .status(400)
-      .send("Error: User ID was found but does not exist in following API");
+      .send("Error: Username was found this person does not follow anyone.");
   }
 
   const followingList = following[0].following;
