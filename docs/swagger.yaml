@@ -285,6 +285,53 @@ paths:
                   $ref: "#/components/schemas/Post"
 
 #
+# Feed
+#
+  /feed:
+    get:
+      summary: Retrieves a list of posts that is appropriate for an anonymous user.
+      description: Retrieves a list of posts as JSON objects. The posts are sorted to present posts with higher likes and views first.URI parameters given the position of the first post in the sort list and the number of subsequent posts to return.
+      tags:
+        - Feed
+      responses:
+        200:
+          description: A list of posts JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+  /feed/{startingPosition}/{pageSize}:                
+    get:
+      summary: Retrieves a portion of a list of posts that is appropriate for an anonymous user.
+      description: Retrieves a list of posts as JSON objects.  The posts are sorted to present posts with higher likes and views first.
+      tags:
+        - Feed
+      parameters:
+        - in: path
+          name: startingPosition
+          required: true
+          description: MongoDB id
+          schema:
+            type: integer
+        - in: path
+          name: pageSize
+          required: true
+          description: MongoDB id
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A list of posts JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+#
 # Project Notes
 #
   /project_notes/contributor:
@@ -491,7 +538,7 @@ paths:
 
   /user-likes/{id}:
     get:
-      summary: Retrieves all likes for gvine user.
+      summary: Retrieves all Likes that a given user made.
       tags:
         - Likes
       parameters:
@@ -585,6 +632,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/Like"
 
+  /count/likes-by-user/{id}:
+    get:
+      summary: Counts the number of posts a user liked.
+      tags:
+        - Likes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Counts all likes made by a user with given MongoDB id.
+      responses:
+        200:
+          description: The number of likes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numberLiked:
+                    type: integer
+
   /likes/unLike:
     delete:
       summary: Deletes the given like.
@@ -641,4 +712,28 @@ paths:
               schema:
                 $ref: "#/components/schemas/View"
 
-
+  /views:
+    get:
+      summary: Returns the number of views for a given post.  This is a horrible API. The post must be identfied in the body rather than as a paramter in the URI and the output result is misnamed (refers to likes rather than views). And I don't think it works.
+      tags:
+        - Views
+      description: Counts the views for the given post identfied by MongoDB ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                postId:
+                  type: string
+      responses:
+        200:
+          description: Number of views.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numberLiked:
+                    type: integer

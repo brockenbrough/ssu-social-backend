@@ -5,7 +5,7 @@ const router = express.Router();
 
 //Gets posts from post service API
 async function getPosts() {
-  const response = await axios.get("http://localhost:8095/posts/getAllPosts");
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/posts/getAllPosts`);
   // console.log(response.data);
   return response.data;
 }
@@ -13,7 +13,7 @@ async function getPosts() {
 //Gets likes from statistics service API
 async function getLikes() {
   const response = await axios.get(
-    "http://localhost:8095/statistics/like-list"
+    `${process.env.REACT_APP_BACKEND_SERVER_URI}/like-list`
   );
   // console.log(response.data);
   return response.data;
@@ -21,27 +21,27 @@ async function getLikes() {
 
 //Gets views from statistics service API
 async function getViews() {
-  const response = await axios.get("http://localhost:8095/statistics/views");
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/views`);
   // console.log(response.data);
   return response.data;
 }
 
 //gets a list of the users that are followed from the logged in user
 async function getFollowing(userId) {
-  const response = await axios.get(`http://localhost:8095/following/${userId}`);
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/following/${userId}`);
   // console.log(response.data);
   return response.data;
 }
 
 async function getAllUserIds() {
-  const response = await axios.get(`http://localhost:8095/user/getAll`);
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/user/getAll`);
   // console.log(response.data);
   return response.data;
 }
 
 async function getAllPostsByUserId(userId) {
   const response = await axios.get(
-    `http://localhost:8095/posts/getAllByUsername/${userId}`
+    `${process.env.REACT_APP_BACKEND_SERVER_URI}/posts/getAllByUsername/${userId}`
   );
   // console.log(response.data);
   return response.data;
