@@ -284,6 +284,30 @@ paths:
                 items:
                   $ref: "#/components/schemas/Post"
 
+
+  /posts/getAllByUsername/{username}:
+    get:
+      summary: Get all posts made by a given user.
+      description: Retrieves a list of posts as JSON objects.
+      tags:
+        - Post
+      parameters:
+        - in: path
+          name: username
+          required: true
+          description: The name of the user.
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of posts as JSON objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
 #
 # Feed
 #
@@ -313,13 +337,13 @@ paths:
         - in: path
           name: startingPosition
           required: true
-          description: MongoDB id
+          description: zero-based index of the first post to return.
           schema:
             type: integer
         - in: path
           name: pageSize
           required: true
-          description: MongoDB id
+          description: total number of posts returned.
           schema:
             type: integer
       responses:
