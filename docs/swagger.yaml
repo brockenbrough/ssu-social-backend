@@ -449,9 +449,9 @@ paths:
         - Comment
       parameters:
         - in: path
-          name: postId
+          name: id
           required: true
-          description: The MongoDB id of the post.
+          description: The MongoDB id of the comment.
           schema:
             type: string
       responses:
@@ -484,12 +484,52 @@ paths:
       responses:
         200:
           description: Returned on success.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
+
+  /comments/comment/update/{id}:
+    put:
+      summary: Updates a comment. 
+      tags:
+        - Comment
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The MongoDB id of the comment.
+          schema:
+            type: string
+      description: Updates a post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                commentContent:
+                  type: string
+      responses:
+        200:
+          description: Returned on success.
+
+  /comments/comment/{commentId}:
+    delete:
+      summary: Deletes the given comment.
+      tags:
+        - Comment
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          description: The MongoDB id of the comment.
+          schema:
+            type: string
+      description: Deletes the comment.
+      responses:
+        200:
+          description: Returned on success.
+  
 
 #
 # Feed

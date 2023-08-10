@@ -66,7 +66,7 @@ commentRoutes.put("/comments/comment/update/:id", (req, res) => {
     );
 });
 
-// This section will help you delete a contributor
+// This section will help you delete a comment
 commentRoutes.delete("/comments/comment/:id", (req, res) => {
   comment.findByIdAndRemove(req.params.id, req.body)
     .then((comment) => res.json({ msg: "comment deleted successfully" }))
