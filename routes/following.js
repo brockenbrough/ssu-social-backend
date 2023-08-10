@@ -25,7 +25,7 @@ followerRoutes.get("/following", async (req, res) => {
 followerRoutes.get("/followers/:id", (req, res) => {
   followerModel
     .find({ userId: req.params.id })
-    .then((follower) => res.json(follower))
+    .then((followers) => res.json(followers))
     .catch((err) => res.status(404).json({ User: "No user found." }));
 });
 

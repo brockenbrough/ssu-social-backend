@@ -330,6 +330,51 @@ paths:
                 items:
                   $ref: "#/components/schemas/Post"
 
+  /posts/createPost:
+    post:
+      summary: Create a post.
+      tags:
+        - Post
+      description: Creates a post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                content:
+                  type: string
+      responses:
+        200:
+          description: Returned on success.
+
+
+  /posts/postImages:
+    post:
+      summary: A very confused API endpoint.  Seems to be a duplicate of /posts/createPost.
+      tags:
+        - Post
+      description: Creates a post containing an image location on S3 of the associated image  Seems like this should be folded into the other post API methods instead.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                content:
+                  type: string
+                postImage:
+                  type: string
+      responses:
+        200:
+          description: Returned on success.
+
 
   /posts/updatePost/{postId}:
     put:
@@ -447,191 +492,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Post"
-#
-# Project Notes
-#
-  /project_notes/contributor:
-    get:
-      summary: Retrieves all contributors.
-      tags:
-        - Project Notes
-      description: Retrieves all contributors as JSON objects.
-      responses:
-        200:
-          description: A list of contributors JSON objects in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Contributor"
-
-  /project_notes/contributor/{id}:
-    get:
-      summary: Get specific user.
-      description: Retrieves a user by collection entry id.
-      tags:
-        - Project Notes
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: The Contributor in the format of a JSON object.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Contributor"
-
-  /project_notes/contributor/add:
-    post:
-      summary: Create a contributor.
-      tags:
-        - Project Notes
-      description: Create a contributor.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                position:
-                  type: string
-                level:
-                  type: string
-      responses:
-        200:
-          description: Returns the created contributor.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Contributor"
-
-  /project_notes/contributor/delete/{id}:
-    delete:
-      summary: Deletes the contributor.
-      tags:
-        - Project Notes
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      description: Deletes the contributor with the given MongoDB id.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                position:
-                  type: string
-                level:
-                  type: string
-      responses:
-        200:
-          description: Returns a message about the success of the operation.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  msg:
-                    type: string
-
-  /project_notes/contributor/{id}:
-    get:
-      summary: Get specific user.
-      description: Retrieves a user by collection entry id.
-      tags:
-        - Project Notes
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: The Contributor in the format of a JSON object.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Contributor"
-
-  /project_notes/contributor/add:
-    post:
-      summary: Create a contributor.
-      tags:
-        - Project Notes
-      description: Create a contributor.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                position:
-                  type: string
-                level:
-                  type: string
-      responses:
-        200:
-          description: Returns the created contributor.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Contributor"
-
-  /project_notes/contributor/update/{id}:
-    put:
-      summary: Updates the contributor.
-      tags:
-        - Project Notes
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      description: Updates the contributor with the given MongoDB id.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                position:
-                  type: string
-                level:
-                  type: string
-      responses:
-        200:
-          description: Returns the created contributor.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Contributor"
 
 #
 # Likes
@@ -853,3 +713,312 @@ paths:
                 properties:
                   numberLiked:
                     type: integer
+#
+# Following
+#
+  /followers:
+    get:
+      summary: Retrieves an array of all users (that have followers) and their followers.
+      tags:
+        - Following
+      description: Retrieves all likes as JSON objects.
+      responses:
+        200:
+          description: A list of following JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Following"
+
+  /followers/{userId}:
+    get:
+      summary: Retrieves an array of all followers for a given user. Does this work?
+      tags:
+        - Following
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id of user
+          schema:
+            type: string
+      description: Retrieves all likes as JSON objects.
+      responses:
+        200:
+          description: A list of following JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Following"
+
+  /following:
+    get:
+      summary: Retrieves an array of all users (that follow at least 1 person) and who they are following.
+      tags:
+        - Following
+      description: Retrieves all likes as JSON objects.
+      responses:
+        200:
+          description: A list of following JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Following"
+
+  /following/{userId}:
+    get:
+      summary: Retrieves an array of users a given person follows. Does this work?
+      tags:
+        - Following
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id of user
+          schema:
+            type: string
+      description: Retrieves all likes as JSON objects.
+      responses:
+        200:
+          description: A list of following JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Following"
+
+  /followers/follow:
+    post:
+      summary: Gives a user a follower.
+      tags:
+        - Following
+      description: Create a follower for a user. The targetUserId is a follower of the userId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                targetUserId:
+                  type: string
+      responses:
+        200:
+          description: Returned on success.
+
+  /followers/unfollow:
+    delete:
+      summary: Deletes the given like.
+      tags:
+        - Following
+      description: Deletes relationship of userId following targetUserId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                targetUserId:
+                  type: string
+      responses:
+        200:
+          description: Returned on success.
+
+#
+# Project Notes
+#
+  /project_notes/contributor:
+    get:
+      summary: Retrieves all contributors.
+      tags:
+        - Project Notes
+      description: Retrieves all contributors as JSON objects.
+      responses:
+        200:
+          description: A list of contributors JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/{id}:
+    get:
+      summary: Get specific user.
+      description: Retrieves a user by collection entry id.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: The Contributor in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/add:
+    post:
+      summary: Create a contributor.
+      tags:
+        - Project Notes
+      description: Create a contributor.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns the created contributor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/{id}:
+    get:
+      summary: Get specific user.
+      description: Retrieves a user by collection entry id.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: The Contributor in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/add:
+    post:
+      summary: Create a contributor.
+      tags:
+        - Project Notes
+      description: Create a contributor.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns the created contributor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/update/{id}:
+    put:
+      summary: Updates the contributor.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Updates the contributor with the given MongoDB id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns the created contributor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contributor"
+
+  /project_notes/contributor/delete/{id}:
+    delete:
+      summary: Deletes the contributor.
+      tags:
+        - Project Notes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      description: Deletes the contributor with the given MongoDB id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: string
+                level:
+                  type: string
+      responses:
+        200:
+          description: Returns a message about the success of the operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+
