@@ -39,7 +39,7 @@ commentRoutes.get("/comments/comment", (req, res) => {
     );
 });
 
-// This section will help you get a single contributor by id
+// This section will help you get a single contributor by id.  Does this work? Unclear what it is doing.
 commentRoutes.get("/comments/comment/:id", (req, res) => {
   comment.findById(req.params.id)
     .then((comment) => res.json(comment))

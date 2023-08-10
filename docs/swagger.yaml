@@ -326,33 +326,6 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Post"
-
-  /posts/createPost:
-    post:
-      summary: Create a post.
-      tags:
-        - Post
-      description: Creates a post.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                content:
-                  type: string
-      responses:
-        200:
-          description: Returned on success.
-
-
-  /posts/postImages:
     post:
       summary: A very confused API endpoint.  Seems to be a duplicate of /posts/createPost.
       tags:
@@ -384,6 +357,18 @@ paths:
       description: Updates the post.
       requestBody:
         required: true
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+  /posts/createPost:
+    post:
+      summary: Create a post.
+      tags:
+        - Post
+      description: Creates a post.
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -393,13 +378,29 @@ paths:
                   type: string
                 content:
                   type: string
-      parameters:
-        - in: path
-          name: postId
-          required: true
-          description: The MongoDB id of the post.
-          schema:
-            type: string
+      responses:
+        200:
+          description: Returned on success.
+
+  /posts/postImages:
+    post:
+      summary: A very confused API endpoint.  Seems to be a duplicate of /posts/createPost.
+      tags:
+        - Post
+      description: Creates a post containing an image location on S3 of the associated image  Seems like this should be folded into the other post API methods instead.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                content:
+                  type: string
+                postImage:
+                  type: string
       responses:
         200:
           description: Returned on success.
@@ -420,6 +421,75 @@ paths:
       responses:
         200:
           description: Returned on success.
+
+#
+# Comments
+#
+  /comments/comment:
+    get:
+      summary: Retrieves all comments.
+      description: Retrieves a list of all comments as JSON objects.
+      tags:
+        - Comment
+      responses:
+        200:
+          description: A list of comments JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+  /comments/comment/{id}:
+    get:
+      summary: Retrieves a comment by MongoDB id, maybe.  Seems broken.
+      description: Retrieves a comment
+      tags:
+        - Comment
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: The MongoDB id of the post.
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of comments JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+  /comments/comment/add:
+    post:
+      summary: Create a comment.  How can the comment be created without a post id? Seems broken.
+      tags:
+        - Comment
+      description: Creates a post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                commentContent:
+                  type: string
+      responses:
+        200:
+          description: Returned on success.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
 
 #
 # Feed
