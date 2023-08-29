@@ -151,7 +151,7 @@ router
 //returns sorted feed for the loged in user
 router.route("/feed/:username").get(async function (req, res) {
   //shows the feed
-  const userId = req.params.username;
+  const username = req.params.username;  // is this username or userId?  What is needed?  How does feed use this?
   const allUserId = await getAllUserIds();
   const following = await getFollowing(username);  //ERROR! getFollowing takes userid not username!
 
