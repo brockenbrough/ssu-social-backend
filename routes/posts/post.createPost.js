@@ -1,19 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const newPostModel = require('../../models/postModel')
+const newPostModel = require('../../models/postModel');
+const mongoose = require("mongoose");
 
-router.post("/posts/createPost", async (req, res) => { 
-  const { username, content,postImage } = req.body
+router.post("/posts/createPost", async (req, res) => {
+  const { id, username, content } = req.body;
 
   const createNewPost = newPostModel({
+    userId : mongoose.Types.ObjectId(id),
     username: username,
     content: content,
-    postImage: postImage
-  })
-  
-  const response = await newPostModel.create(createNewPost)
-  .then(post => res.json({ msg: 'Post created successfully' }))
-  .catch(err => res.status(404).json({ error: 'Could not create post' }));
-})
+  });
+
+  try {
+    const response = await newPostModel.create(createNewPost);
+    res.json({ msg: 'Post created successfully' });
+  } catch (err) {
+    console.error('Error creating post:', err);
+    res.status(500).json({ error: 'Could not create post' });
+  }
+});
 
 module.exports = router;
