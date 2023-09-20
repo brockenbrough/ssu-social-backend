@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 //post schema/model
 const newPostSchema = new mongoose.Schema(
   {
+    userId: {
+      type : mongoose.Schema.Types.ObjectId, ref: 'users',
+      required: true,
+      label: 'userId',
+    },
     username: {
         type: String,
         required: true,
@@ -11,7 +16,6 @@ const newPostSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
-  
   },
     {collection: "posts"}
 );
