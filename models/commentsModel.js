@@ -21,7 +21,15 @@ const commentsSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now(),
    },
-   
+
+   /**
+    * added 9/20/2023
+    * team C
+    */
+   postId: {
+      type: String,
+      required: true,
+   }
    
   },
 
