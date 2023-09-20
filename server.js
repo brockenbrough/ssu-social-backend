@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(require("./routes/project_notes"));
 app.use(require("./routes/comments"));
 app.use(require('./routes/following'));
-app.use(require("./routes/Feedpage"));
 app.use(require('./routes/posts/post.createPost'))
 app.use(require('./routes/posts/post.deletePost'))
 app.use(require('./routes/posts/post.getAllPosts'))
