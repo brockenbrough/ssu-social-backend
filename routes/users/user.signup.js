@@ -35,6 +35,7 @@ router.post('/user/signup', async (req, res) => {
         const saveNewUser = await createUser.save();
         res.send(saveNewUser);
     } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "Error trying to create new user" });
     }
 
