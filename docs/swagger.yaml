@@ -802,9 +802,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/View"
 
-  /views:
+  /views/{id}:
     get:
-      summary: Returns the number of views for a given post.  This is a horrible API. The post must be identfied in the body rather than as a paramter in the URI and the output result is misnamed (refers to likes rather than views). And I don't think it works.
+      summary: Returns the number of views for a given post. 
       tags:
         - Views
       parameters:
