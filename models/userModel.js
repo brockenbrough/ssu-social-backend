@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-//user schema/model
 const newUserSchema = new mongoose.Schema(
   {
     username: {
@@ -22,7 +21,13 @@ const newUserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-  },
+    _id: {
+      required: true,
+      type : mongoose.Schema.Types.ObjectId,
+      default: mongoose.Types.ObjectId(),
+      label: '_id',
+    }, 
+  }, 
   { collection: "users" }
 );
 

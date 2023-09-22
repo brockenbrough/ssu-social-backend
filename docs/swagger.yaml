@@ -79,8 +79,10 @@ components:
       type: object
       properties:
         username:
-          type: string
+            type: string
         content:
+          type: string
+        date:
           type: string
 
     User:
@@ -377,6 +379,8 @@ paths:
                 username:
                   type: string
                 content:
+                  type: string
+                date:
                   type: string
       responses:
         200:

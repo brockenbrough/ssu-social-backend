@@ -1,0 +1,23 @@
+// Get all comments
+###
+GET http://localhost:8095/comments/comment
+Content-Type: application/json
+
+// Add a comment
+###
+POST http://localhost:8095/comments/comment/add
+Content-Type: application/json
+
+{
+    "postId": "64cd0f3fcc8f684ea4390df6",
+    "username": "testComment",
+    "commentContent": "This is a test comment."
+}
+
+// Delete a comment by ID
+###
+DELETE http://localhost:8095/comments/comment/:id
+Content-Type: application/json
+
+//
+###
