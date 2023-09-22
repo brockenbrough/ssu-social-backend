@@ -8,6 +8,7 @@ const newUserSchema = new mongoose.Schema(
       required: true,
       label: "username",
     },
+    
     email: {
       type: String,
       required: true,

@@ -11,7 +11,7 @@ const newPostSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
-  
+    
   },
     {collection: "posts"}
 );
