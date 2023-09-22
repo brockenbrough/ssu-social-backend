@@ -90,8 +90,10 @@ route.get('/count/likes-by-user/:userId', async(req,res) => {
 //Find the amount of likes by postId
 route.get('/count/likes-for-post/:postId', async(req,res) => {
   try{
-    const response = await likeSchema.find({postId: req.params.postId}).count()
-    return res.status(200).json(response)
+    const likes = await likeSchema.find({ postId: req.params.postId });
+    const likeCount = likes.length; // Count the number of likes in the array
+
+    return res.status(200).json(likeCount)
   }catch{
     res.sendStatus(404).send({message: "Post does not exist"})
   }
