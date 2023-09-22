@@ -819,7 +819,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  numberLiked:
+                  numberViews:
                     type: integer
 #
 # Following
