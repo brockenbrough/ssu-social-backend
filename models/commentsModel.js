@@ -6,12 +6,12 @@ const commentsSchema = new mongoose.Schema({
     default: '',
    },
 
-   // add userID to associcated
+   // add userID to associcate with comment 
    userId: {
       type: String,
       default: '',
      },
-  
+   
    commentContent:{ 
     type: String,
     default: '',
@@ -25,6 +25,11 @@ const commentsSchema = new mongoose.Schema({
    date: {
     type: Date,
     default: () => Date.now(),
+   },
+
+   postId: {
+      type: String,
+      required: true,
    },
    
    
