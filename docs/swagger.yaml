@@ -79,8 +79,10 @@ components:
       type: object
       properties:
         username:
-          type: string
+            type: string
         content:
+          type: string
+        date:
           type: string
 
     User:
@@ -377,6 +379,8 @@ paths:
                 username:
                   type: string
                 content:
+                  type: string
+                date:
                   type: string
       responses:
         200:
@@ -798,21 +802,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/View"
 
-  /views:
+  /views/{id}:
     get:
-      summary: Returns the number of views for a given post.  This is a horrible API. The post must be identfied in the body rather than as a paramter in the URI and the output result is misnamed (refers to likes rather than views). And I don't think it works.
+      summary: Returns the number of views for a given post. 
       tags:
         - Views
-      description: Counts the views for the given post identfied by MongoDB ID.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                postId:
-                  type: string
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id for post
+          schema:
+            type: string
+      description: Counts all views for the given post.
       responses:
         200:
           description: Number of views.
@@ -821,7 +823,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  numberLiked:
+                  numberViews:
                     type: integer
 #
 # Following

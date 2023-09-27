@@ -20,6 +20,11 @@ const commentsSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now(),
    },
+
+   postId: {
+      type: String,
+      required: true,
+   },
    
    
   },

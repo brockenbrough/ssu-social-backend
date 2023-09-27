@@ -24,7 +24,7 @@ beforeEach(async () => {
   await clearDatabase();
 });
 
-describe('Feed API Tests', () => {
+describe('Regression Tests: Feed API', () => {
     // Test for GET request to '/project_notes/contributor'
     it('should get all developers - replace me', (done) => {
       chai
