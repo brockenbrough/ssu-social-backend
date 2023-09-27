@@ -24,7 +24,6 @@ app.use(require('./routes/posts/post.getAllPosts'))
 app.use(require('./routes/posts/post.getPostById'))
 app.use(require('./routes/posts/post.updatePost'))
 app.use(require('./routes/posts/post.getAllByUsername'))
-app.use(require('./routes/posts/post.uploadImages'))
 app.use(require('./routes/users/user.login'))
 app.use(require('./routes/users/user.getAllUsers'))
 app.use(require('./routes/users/user.signup'))
@@ -32,6 +31,7 @@ app.use(require('./routes/users/user.getuserById'))
 app.use(require('./routes/users/user.editUser'))
 app.use(require('./routes/users/user.deleteall'))
 app.use(require('./routes/statistics'))
+//app.use(require('./routes/posts/post.uploadImages'))
 
 // get driver connection
 const connectDB = require("./db/conn");

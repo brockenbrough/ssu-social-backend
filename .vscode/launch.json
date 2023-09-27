@@ -10,14 +10,14 @@
         {
             "cwd": "${workspaceFolder}",
             "command": "npm start",
-            "name": "All backend services",
+            "name": "Backend Debug",
             "request": "launch",
             "type": "node-terminal"
         },
         {
             "cwd": "${workspaceFolder}",
             "command": "npm run test:projectNotes",
-            "name": "Run project notes test",
+            "name": "Test Project Notes",
             "request": "launch",
             "type": "node-terminal"
         },

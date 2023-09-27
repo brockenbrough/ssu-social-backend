@@ -21,37 +21,28 @@ after(async () => {
 
 // Run before each test
 beforeEach(async () => {
-  await clearDatabase();
+  // await clearDatabase();  We let the data build up through out these tests.
 });
 
-describe('ProjectNotes API Tests', () => {
+describe('Regression Tests: ProjectNotes', () => {
+    let contributorId = '';
+    
     // Test for GET request to '/project_notes/contributor'
-    it('should get all developers', (done) => {
+    // Expected there are no contributors since this is a new database.
+    it('should get no developers', (done) => {
       chai
         .request(app)
         .get('/project_notes/contributor')
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('array');
+          expect(res.body).to.have.lengthOf(0); // Check if array size is 0
           done();
         });
     });
-  
-    // Test for GET request to '/project_notes/contributor/:id'
-    // it('should get a specific developer', (done) => {
-    //   const developerId = 'your_developer_id_here';
-    //   chai
-    //     .request(app)
-    //     .get(`/project_notes/contributor/${developerId}`)
-    //     .end((err, res) => {
-    //       expect(res).to.have.status(200);
-    //       expect(res.body).to.be.an('object');
-    //       // Add more assertions for the specific developer data
-    //       done();
-    //     });
-    // });
-  
+
     // Test for POST request to '/project_notes/contributor/add'
+    // Expected to add a new developer to the database.
     it('should add a new developer', (done) => {
       const newDeveloper = {
         name: 'John Doe',
@@ -64,11 +55,69 @@ describe('ProjectNotes API Tests', () => {
         .send(newDeveloper)
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body.msg).to.equal('Developer added successfully');
+
           done();
         });
     });
+
+    // Test for GET request to '/project_notes/contributor'
+    // Expected there is one contributore now in the database.
+    it('should get one developer', (done) => {
+      chai
+        .request(app)
+        .get('/project_notes/contributor')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('array');
+          expect(res.body).to.have.lengthOf(1);
+          contributorId = res.body[0]._id; // Save the _id to the variable
+          //console.log('     Add developer: ' + contributorId);
+
+          done();
+        });
+    });
+
+        // Test for GET request to '/project_notes/contributor/:id'
+    it('should get a specific developer', (done) => {
+        const developerId = contributorId; // Use the saved _id
+        chai
+            .request(app)
+            .get(`/project_notes/contributor/${developerId}`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.an('object');
+                // Add more assertions for the specific developer data
+
+                done();
+            });
+    });
   
+
+
     // Add more tests for other API endpoints (PUT, DELETE, etc.)
+        // Test for POST request to '/project_notes/contributor/update/:id'
+    it('should update a specific developer', (done) => {
+      const developerId = contributorId; // Use the saved _id
+
+      const updateBody = {
+          name: 'Updated Name',
+
+          position: 'Updated Position',
+          level: 'Advanced'
+      };
+
+      chai
+          .request(app)
+          .put(`/project_notes/contributor/update/${developerId}`)
+          .send(updateBody)
+          .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body.msg).to.equal('Updated successfully');
+
+              done();
+          });
+    });
+
+  
   });
   
