@@ -159,14 +159,17 @@ router.route("/feed/:username").get(async function (req, res) {
   let userIdList = [];
   let followingUsersPosts = [];
 
+  // get an array of all userames 
   for (i = 0; i < allUserId.length; i++) {
     userIdList[i] = allUserId[i].username;
   }
 
+  // check if the username we were is bogus or not (in our list of names)
   if (!userIdList.includes(username)) {
     return res.status(400).send("Error: invalid username");
   }
 
+  // what if user isn't following anyone 
   if (following[0] == null) {
     return res
       .status(400)
@@ -175,6 +178,7 @@ router.route("/feed/:username").get(async function (req, res) {
 
   const followingList = following[0].following;
   
+  // get all the posts from the users that the logged in user is following 
   for (i = 0; i < followingList.length; i++) {
     try {
       userPosts = await getAllPostsByUserId(followingList[i]);
@@ -185,7 +189,7 @@ router.route("/feed/:username").get(async function (req, res) {
     }
   }
 
-
+    // fill up the array postIDs with all the postIDs from mthe users that the logged 
     followingUsersPosts.map(e => {
       e.map(e => {
         postIDs.push(e._id);
