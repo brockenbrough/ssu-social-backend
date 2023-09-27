@@ -10,7 +10,7 @@ router.post("/posts/createPost", async (req, res) => {
     userId : mongoose.Types.ObjectId(id),
     username: username,
     content: content,
-    image: image,
+    image: image, 
   });
 
   try {
