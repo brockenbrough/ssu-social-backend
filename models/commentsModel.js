@@ -10,7 +10,6 @@ const commentsSchema = new mongoose.Schema({
     type: String,
     default: '',
    },
-   
 
    replies: {
       type: [String],
