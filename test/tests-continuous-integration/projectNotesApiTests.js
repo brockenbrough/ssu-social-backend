@@ -24,7 +24,7 @@ beforeEach(async () => {
   // await clearDatabase();  We let the data build up through out these tests.
 });
 
-describe('ProjectNotes API Tests', () => {
+describe('Regression Tests: ProjectNotes', () => {
     let contributorId = '';
     
     // Test for GET request to '/project_notes/contributor'
