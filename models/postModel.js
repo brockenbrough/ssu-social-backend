@@ -22,16 +22,10 @@ const newPostSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
-<<<<<<< HEAD
-    
-=======
-
     date: {
       type: Date,
       default: () => Date.now(),
      },
-
->>>>>>> dff84c7509e7826726b1f9edad4e3131cf5f7125
   },
     {collection: "posts"}
 );
