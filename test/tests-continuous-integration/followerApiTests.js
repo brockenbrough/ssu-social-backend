@@ -61,6 +61,7 @@ describe('Regression Tests: Followers', () => { //This was the updated test
     });
 
     // Test for GET request to '/project_notes/contributor'
+    
     // Expected there is one contributore now in the database.
     it('should get one developer', (done) => {
       chai
