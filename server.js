@@ -31,7 +31,7 @@ app.use(require('./routes/users/user.getuserById'))
 app.use(require('./routes/users/user.editUser'))
 app.use(require('./routes/users/user.deleteall'))
 app.use(require('./routes/statistics'))
-
+//app.use(require('./routes/posts/post.uploadImages'))
 
 // get driver connection
 const connectDB = require("./db/conn");
