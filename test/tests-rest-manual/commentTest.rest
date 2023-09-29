@@ -10,6 +10,7 @@ Content-Type: application/json
 
 {
     "postId": "64cd0f3fcc8f684ea4390df6",
+    "userId": "64d2488c1e95cce18b6bf619",
     "username": "testComment",
     "commentContent": "This is a test comment."
 }
