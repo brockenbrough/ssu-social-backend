@@ -114,10 +114,10 @@ paths:
 #
   /user/getAll:
     get:
-      summary: Retrieves all users.
+      summary: Retrieves all the users.
       tags:
         - User
-      description: Retrieves a list of users as JSON objects.
+      description: This retrieves a list of users as JSON objects.
       responses:
         200:
           description: A list of user JSON objects in an array.
