@@ -27,6 +27,10 @@ const newUserSchema = new mongoose.Schema(
       default: mongoose.Types.ObjectId(),
       label: '_id',
     }, 
+    profileImage: {
+      type: String,
+      default: ''  
+    },
   }, 
   { collection: "users" }
 );
