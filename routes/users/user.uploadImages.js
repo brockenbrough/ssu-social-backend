@@ -11,7 +11,7 @@ mongoose.connection.once('open', () => {
   gfs.collection('uploads');
 });
 
-router.post('/updateProfileImage/:username', async (req, res) => {
+router.post('/user/updateProfileImage/:username', async (req, res) => {
   console.log("Received request to update profile image for:", req.params.username);
 
   const username = req.params.username;
