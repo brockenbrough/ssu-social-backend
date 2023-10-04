@@ -10,7 +10,7 @@ mongoose.connection.once('open', () => {
   gfs.collection('uploads');
 });
 
-router.get('/profileImage/:filename', (req, res) => {
+router.get('user/profileImage/:filename', (req, res) => {
   const filename = req.params.filename;
 
   gfs.files.findOne({ filename: filename }, (err, file) => {
