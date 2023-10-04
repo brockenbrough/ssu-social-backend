@@ -25,10 +25,12 @@ beforeEach(async () => {
 });
 
 describe('Regression Tests: Followers', () => { //This was the updated test
-    let contributorId = '';
+    let followerID = '';
     
     // Test for GET request to '/project_notes/contributor'
     // Expected there are no contributors since this is a new database.
+
+   
     it('should get all users and their followers, there should be none', (done) => {
       chai
         .request(app)
@@ -41,18 +43,29 @@ describe('Regression Tests: Followers', () => { //This was the updated test
         });
     });
 
+    it('should get all users and who they are following, there should be none', (done) => {
+        chai
+          .request(app)
+          .get('/following ')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('array');
+            expect(res.body).to.have.lengthOf(0); // Check if array size is 0
+            done();
+          });
+      });
+
     // Test for POST request to '/project_notes/contributor/add'
     // Expected to add a new developer to the database.
-    it('should add a new developer', (done) => {
-      const newDeveloper = {
-        name: 'John Doe',
-        position: 'Backend Developer',
-        level: 'Intermediate',
+    it('should add a new follower', (done) => {
+      const newFollowers = {
+        userId: '63dbcbfe407533287b1fe360',
+        targetUserId: '64fb4f5573e33130dc65e7b3',
       };
       chai
         .request(app)
-        .post('/project_notes/contributor/add')
-        .send(newDeveloper)
+        .post('/followers/follow')
+        .send(newFollowers)
         .end((err, res) => {
           expect(res).to.have.status(200);
 
@@ -60,64 +73,41 @@ describe('Regression Tests: Followers', () => { //This was the updated test
         });
     });
 
-    // Test for GET request to '/project_notes/contributor'
     
-    // Expected there is one contributore now in the database.
-    it('should get one developer', (done) => {
+   
+    // Test for GET request to '/followers'
+    
+    // Expected there is one follower now in the database.
+    it('should get one follower', (done) => {
       chai
         .request(app)
-        .get('/project_notes/contributor')
+        .get('/followers')
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('array');
           expect(res.body).to.have.lengthOf(1);
-          contributorId = res.body[0]._id; // Save the _id to the variable
+          followerId = res.body[0]._id; // Save the _id to the variable
           //console.log('     Add developer: ' + contributorId);
 
           done();
         });
     });
-
-        // Test for GET request to '/project_notes/contributor/:id'
-    it('should get a specific developer', (done) => {
-        const developerId = contributorId; // Use the saved _id
+    it('should unfollow a follower', (done) => {
+        const Unfollowers = {
+          userId: '65174f22f80b7b1ae1753085',
+          targetUserId: '64fb4f5573e33130dc65e7b3',
+        };
         chai
-            .request(app)
-            .get(`/project_notes/contributor/${developerId}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                // Add more assertions for the specific developer data
-
-                done();
-            });
-    });
-  
-
-
-    // Add more tests for other API endpoints (PUT, DELETE, etc.)
-        // Test for POST request to '/project_notes/contributor/update/:id'
-    it('should update a specific developer', (done) => {
-      const developerId = contributorId; // Use the saved _id
-
-      const updateBody = {
-          name: 'Updated Name',
-
-          position: 'Updated Position',
-          level: 'Advanced'
-      };
-
-      chai
           .request(app)
-          .put(`/project_notes/contributor/update/${developerId}`)
-          .send(updateBody)
+          .post('/followers/unfollow')
+          .send(Unfollowers)
           .end((err, res) => {
-              expect(res).to.have.status(200);
-              expect(res.body.msg).to.equal('Updated successfully');
-
-              done();
-          });
-    });
-
+            expect(res).to.have.status(200);
   
+            done();
+          });
+      });
+    
+    // Add more tests for other API endpoints (PUT, DELETE, etc.)
+       
   });
