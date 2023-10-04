@@ -8,29 +8,12 @@ const port = process.env.PORT || 8095;
 const swaggerUi = require("swagger-ui-express");
 const yaml = require("yamljs");
 
-const mongoose = require('mongoose');
-const Grid = require('gridfs-stream');
-
-mongoose.connect(process.env.ATLAS_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const conn = mongoose.connection;
-
-conn.once('open', () => {
-  // Initialize GridFS stream
-  Grid(conn.db, mongoose.mongo);
-});
-
-// Set up swagger
+// Set up swaager
 const swaggerDefinition = yaml.load("./docs/swagger.yaml");
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
 app.use(cors());
 app.use(express.json());
-
-// Routes
 app.use(require("./routes/project_notes"));
 app.use(require("./routes/comments"));
 app.use(require('./routes/feed'));
@@ -47,14 +30,17 @@ app.use(require('./routes/users/user.signup'))
 app.use(require('./routes/users/user.getuserById'))
 app.use(require('./routes/users/user.editUser'))
 app.use(require('./routes/users/user.deleteall'))
-app.use('/user', require('./routes/users/user.uploadImages'));
-app.use(require('./routes/users/user.images'))
 app.use(require('./routes/statistics'))
+//app.use(require('./routes/posts/post.uploadImages'))
 
+// get driver connection
+const connectDB = require("./db/conn");
+ 
 console.log(`The node environment is: ${process.env.NODE_ENV}`);
 
 // Production environment: connect to the database and start listening for requests
 if (process.env.NODE_ENV !== "test") {
+    connectDB();
     app.listen(port, () => {
       setTimeout(() => {
         console.log(`All services are running on port: ${port}`);
@@ -62,4 +48,6 @@ if (process.env.NODE_ENV !== "test") {
     });
 }
 
-module.exports = app; // Export the app instance for unit testing.
+module.exports = app; // Export the app instance for unit testing via supertest.
+
+
