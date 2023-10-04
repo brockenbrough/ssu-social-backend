@@ -8,7 +8,7 @@
     "test:feed": "mocha test/tests-continuous-integration/feedApiTests.js",
     "test:followers": "mocha test/tests-continuous-integration/followerApiTests.js",
     "test:user": "mocha test/tests-continuous-integration/userApiTest.js",
-    "test:comments": "mocha test/tests-continuous-integration/commentsApiTest.js"
+    "test:comments": "mocha test/tests-continuous-integration/commentsApiTests.js"
   },
   "keywords": [],
   "author": "",
