@@ -5,6 +5,7 @@ const newPostSchema = new mongoose.Schema(
     userId: {
       type : mongoose.Schema.Types.ObjectId, ref: 'users',
       required: true,
+      auto: true,
       label: 'userId',
     },
     username: {
