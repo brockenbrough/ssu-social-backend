@@ -1,0 +1,18 @@
+## For Posts
+
+# GET  
+GET http://localhost:8095/posts/getAllPosts
+Content-Type: application/json
+
+# POST
+POST http://localhost:8095/posts/createPost
+Content-Type application/json
+{
+    {
+        "_id": "6501ebd9b45897cd837ba58f",
+        "username": "Nand",
+        "content": "Checking",
+        "__v": 0,
+        "date": "2023-09-22T17:46:32.243Z"
+}
+}
