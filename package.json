@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "cross-env NODE_ENV=test npm run test:projectNotes && cross-env NODE_ENV=test npm run test:feed && cross-env NODE_ENV=test npm run test:user && cross-env NODE_ENV=test npm run test:comments",
+    "test": "cross-env NODE_ENV=test npm run test:projectNotes && cross-env NODE_ENV=test npm run test:feed && cross-env NODE_ENV=test npm run test:user && cross-env NODE_ENV=test npm run test:comments && cross-env NODE_ENV=test npm run test:followers",
     "test:projectNotes": "mocha test/tests-continuous-integration/projectNotesApiTests.js",
     "test:feed": "mocha test/tests-continuous-integration/feedApiTests.js",
     "test:followers": "mocha test/tests-continuous-integration/followerApiTests.js",
     "test:user": "mocha test/tests-continuous-integration/userApiTest.js",
-    "test:comments": "mocha test/tests-continuous-integration/commentsApiTests.js"
+    "test:comments": "mocha test/tests-continuous-integration/commentsApiTests.js",
+    "test: followers": "mocha test/tests-continuous-integration/followerApiTests.js"
   },
   "keywords": [],
   "author": "",
