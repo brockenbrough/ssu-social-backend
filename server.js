@@ -25,7 +25,7 @@ app.use(require('./routes/following'));
 app.use(require('./routes/posts/post.createPost'))
 app.use(require('./routes/posts/post.deletePost'))
 app.use(require('./routes/posts/post.getAllPosts'))
-app.use(require('./routes/posts/post.postImages'))
+app.use(require('./routes/images'))
 app.use(require('./routes/posts/post.getPostById'))
 app.use(require('./routes/posts/post.updatePost'))
 app.use(require('./routes/posts/post.getAllByUsername'))
