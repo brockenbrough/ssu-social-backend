@@ -71,6 +71,13 @@ router.post('/images/create', upload.single('image'),  async (req, res, next) =>
             contentType: 'image/png'
         }
     });
+    fs.unlink(pathToUploads, (err) => {
+        if (err) {
+          console.error('Error deleting file:', err);
+        } else {
+          console.log('File deleted successfully.');
+        }
+      });
   
     try {
       const response = await imageSchema.create(imageToStore);
