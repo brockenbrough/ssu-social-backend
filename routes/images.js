@@ -55,12 +55,17 @@ router.post('/images/create', upload.single('image'),  async (req, res, next) =>
     const directoryAbove = path.resolve(__dirname, '..');
     const pathToUploads = path.resolve(directoryAbove, 'uploads', req.file.filename);
 
+    // Read the image file as base64 data
+    const base64Data = fs.readFileSync(pathToUploads, { encoding: 'base64' });
+
+
     // We are building the image model to store on the server.
     // The img field contains the image data.
     // Notice: that we have the image saved twice: once on the server and once in the database.
     const imageToStore = imageSchema({
         name: req.body.name,
         desc: req.body.desc,
+        base64Data: base64Data,  // Add the base64 data to the image schema
         img: {
             data: fs.readFileSync(path.join(pathToUploads)),
             contentType: 'image/png'
