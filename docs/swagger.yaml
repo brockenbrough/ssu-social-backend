@@ -851,7 +851,7 @@ paths:
         - Following
       parameters:
         - in: path
-          name: id
+          name: userid
           required: true
           description: MongoDB id of user
           schema:
