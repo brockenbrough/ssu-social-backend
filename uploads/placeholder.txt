@@ -1,0 +1,2 @@
+// This is not an image just a file that exists
+// so that the uploads directory is created on github.

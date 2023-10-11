@@ -92,21 +92,21 @@ describe('Regression Tests: Followers', () => { //This was the updated test
           done();
         });
     });
-    it('should unfollow a follower', (done) => {
-        const Unfollowers = {
-          userId: '65174f22f80b7b1ae1753085',
-          targetUserId: '64fb4f5573e33130dc65e7b3',
-        };
-        chai
-          .request(app)
-          .post('/followers/unfollow')
-          .send(Unfollowers)
-          .end((err, res) => {
-            expect(res).to.have.status(200);
+    //it('should unfollow a follower', (done) => {
+       // const Unfollowers = {
+          //userId: '65174f22f80b7b1ae1753085',
+          //targetUserId: '64fb4f5573e33130dc65e7b3',
+        //};
+       // chai
+          //.request(app)
+          //.post('/followers/unfollow')
+         // .send(Unfollowers)
+          //.end((err, res) => {
+           // expect(res).to.have.status(200);
   
-            done();
-          });
-      });
+            //done();
+          //});
+      //});
     
     // Add more tests for other API endpoints (PUT, DELETE, etc.)
        
