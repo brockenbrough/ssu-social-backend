@@ -53,10 +53,10 @@ router.post('/images/create', upload.single('image'),  async (req, res, next) =>
     // We expect there to be a folder
     // called uploads in the root (parallel to routes folder)
     const directoryAbove = path.resolve(__dirname, '..');
-    const pathToUploads = path.resolve(directoryAbove, 'uploads', req.file.filename);
+    const pathToUploadedFile = path.resolve(directoryAbove, 'uploads', req.file.filename);
 
     // Read the image file as base64 data
-    const base64Data = fs.readFileSync(pathToUploads, { encoding: 'base64' });
+    const base64Data = fs.readFileSync(pathToUploadedFile, { encoding: 'base64' });
 
 
     // We are building the image model to store on the server.
@@ -67,17 +67,11 @@ router.post('/images/create', upload.single('image'),  async (req, res, next) =>
         desc: req.body.desc,
         base64Data: base64Data,  // Add the base64 data to the image schema
         img: {
-            data: fs.readFileSync(path.join(pathToUploads)),
+            data: fs.readFileSync(path.join(pathToUploadedFile)),
             contentType: 'image/png'
         }
     });
-    fs.unlink(pathToUploads, (err) => {
-        if (err) {
-          console.error('Error deleting file:', err);
-        } else {
-          console.log('File deleted successfully.');
-        }
-      });
+   
   
     try {
       const response = await imageSchema.create(imageToStore);
@@ -86,6 +80,13 @@ router.post('/images/create', upload.single('image'),  async (req, res, next) =>
       console.error('Error creating post:', err);
       res.status(500).json({ msg: 'Could not create image.' });
     }
+    fs.unlink(pathToUploadedFile, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+      } else {
+        console.log('File deleted successfully.');
+      }
+    });
 
     // This site was used to help write this code:
     // https://www.geeksforgeeks.org/upload-and-retrieve-image-on-mongodb-using-mongoose/
