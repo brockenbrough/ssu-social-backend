@@ -31,6 +31,10 @@ const newUserSchema = new mongoose.Schema(
       type: String,
       default: ''  
     },
+    biography: {
+      type: String,
+      default: ''
+    }
   }, 
   { collection: "users" }
 );
