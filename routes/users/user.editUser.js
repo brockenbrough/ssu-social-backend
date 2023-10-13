@@ -13,7 +13,7 @@ router.post('/user/editUser', async (req, res) =>
     if (error) return res.status(400).send({ message: error.errors[0].message });
 
     // store new user information
-    const {userId, username, email, password} = req.body
+    const {userId, username, email, password, biography} = req.body
 
     // check if username is available
     const user = await newUserModel.findOne({ username: username })
@@ -30,13 +30,14 @@ router.post('/user/editUser', async (req, res) =>
     newUserModel.findByIdAndUpdate(userId, {
         username : username, 
         email : email, 
-        password : hashPassword
+        password : hashPassword,
+        biography : biography
     } ,function (err, user) {
     if (err){
         console.log(err);
     } else {
         // create and send new access token to local storage
-        const accessToken = generateAccessToken(user._id, email, username, hashPassword)  
+        const accessToken = generateAccessToken(user._id, email, username, hashPassword, biography)  
         res.header('Authorization', accessToken).send({ accessToken: accessToken })
     }
     });

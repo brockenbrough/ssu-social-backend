@@ -4,7 +4,8 @@ Content-Type: application/json
 {
     "username" : "tochiamanze",
     "email" : "cdon@gmail.com",
-    "password" : "tochi12345"
+    "password" : "tochi12345",
+    "biography" : "This is me frfr"
 }
 
 ###
@@ -29,7 +30,8 @@ Content-Type: application/json
 {
     "userId" : "635ab8dfc407faf9f73deaf2",
     "username" : "Tochi Edit",
-    "password" : "dwwrwr"
+    "password" : "dwwrwr",
+    "biography" : "This is my biography frfr"
 }
 
 ###
@@ -41,7 +43,7 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:8095/user/getUserById
+GET http://localhost:8095/user/getUserById
 Content-Type: application/json 
 
 {
@@ -49,4 +51,12 @@ Content-Type: application/json
 }
 
 ###
-POST  http://localhost:8095/user/deleteAll
+POST http://localhost:8095/user/deleteAll
+
+###
+POST http://localhost:8095/user/deleteById
+Content-Type: application/json
+
+{
+    "userId" : "6526cdb2c979b340dc23c217"
+}

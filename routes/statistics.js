@@ -3,6 +3,7 @@ const route = express.Router();
 
 const likeSchema = require("../models/like");
 const viewSchema = require("../models/view");
+const newPostModel = require("../models/postModel");
 
 
 /**
@@ -53,6 +54,28 @@ route.post('/likes/like', async(req,res) => {
 route.get('/like-list', async(req,res) => {
   const likes = await likeSchema.find()
   return res.json(likes)
+});
+
+route.get('/user-totallikes/:username', async (req, res) => {
+  const {username} = req.params;
+
+  try {
+    // Find all posts created by the user
+    
+    const userPosts = await newPostModel.find({ username: username });
+
+    // Extract the post IDs from the user's posts
+    const postIds = userPosts.map(post => post._id);
+
+    // Find the count of likes associated with the user's posts
+    const likeCount = await likeSchema.countDocuments({ postId: { $in: postIds } });
+
+    // Return the like count as a JSON response
+    return res.json(likeCount);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 //returns a list of posts that an individual user liked
