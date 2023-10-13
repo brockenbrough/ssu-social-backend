@@ -1,6 +1,8 @@
+
 var mongoose = require('mongoose');
 var imageSchema = new mongoose.Schema(
     {
+          
       name: String,
       desc: String,
       base64Data: String,
@@ -8,8 +10,9 @@ var imageSchema = new mongoose.Schema(
       {
         data: Buffer,
         contentType: String
-      }
+      }  
     },
+    
     { collection: "image_vault", versionKey: false }
 );
  

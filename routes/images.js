@@ -42,6 +42,31 @@ router.get('/images/getAll', async (req, res) => {
         // want that on the backend.
         //  res.render('../../images',{items: data})
     })
+    
+});
+// Define a route to retrieve a specific image by its unique ID.
+router.get('/images/:id', async (req, res) => {
+  const imageId = req.params.id;
+
+  try {
+    // Use Mongoose to find the image by its ID
+    const image = await imageSchema.findOne({ id: imageId });
+
+    if (image) {
+      // Image found, set the appropriate content type
+      res.setHeader('Content-Type', image.img.contentType);
+
+      // Send the image data as the response
+      return res.send(image.img.data);
+    } else {
+      // Image not found, send a 404 error response
+      return res.status(404).json({ message: 'Image not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    // Internal server error, send a 500 error response
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 });
  
 
