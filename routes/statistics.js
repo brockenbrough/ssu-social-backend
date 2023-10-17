@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const commentsSchema = require("../models/commentsModel");
 
 const likeSchema = require("../models/like");
 const viewSchema = require("../models/view");
@@ -98,6 +99,19 @@ route.get('/count/likes-for-post/:postId', async(req,res) => {
     res.sendStatus(404).send({message: "Post does not exist"})
   }
 });
+
+route.get('/count/comments-for-post/:postId', async(req,res) => {
+  try{
+    const comments = await commentsSchema.find({ postId: req.params.postId });
+    const commentCount = comments.length; // Count the number of comments in the array
+
+
+    return res.status(200).json(commentCount)
+  }catch{
+    res.sendStatus(404).send({message: "Post does not exist"})
+  }
+});
+
 
 route.get('/views/:postId',async(req,res)=>{
  try {const response = await viewSchema.find({postId : req.params.postId}).count();
