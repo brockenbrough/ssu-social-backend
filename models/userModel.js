@@ -7,6 +7,7 @@ const newUserSchema = new mongoose.Schema(
       required: true,
       label: "username",
     },
+    
     email: {
       type: String,
       required: true,
@@ -24,17 +25,9 @@ const newUserSchema = new mongoose.Schema(
     _id: {
       required: true,
       type : mongoose.Schema.Types.ObjectId,
-      default: mongoose.Types.ObjectId(),
+      auto: true,
       label: '_id',
     }, 
-    profileImage: {
-      type: String,
-      default: ''  
-    },
-    biography: {
-      type: String,
-      default: ''
-    }
   }, 
   { collection: "users" }
 );

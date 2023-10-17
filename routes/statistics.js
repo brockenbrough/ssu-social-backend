@@ -1,9 +1,9 @@
 const express = require("express");
 const route = express.Router();
+const commentsSchema = require("../models/commentsModel");
 
 const likeSchema = require("../models/like");
 const viewSchema = require("../models/view");
-const newPostModel = require("../models/postModel");
 
 
 /**
@@ -56,28 +56,6 @@ route.get('/like-list', async(req,res) => {
   return res.json(likes)
 });
 
-route.get('/user-totallikes/:username', async (req, res) => {
-  const {username} = req.params;
-
-  try {
-    // Find all posts created by the user
-    
-    const userPosts = await newPostModel.find({ username: username });
-
-    // Extract the post IDs from the user's posts
-    const postIds = userPosts.map(post => post._id);
-
-    // Find the count of likes associated with the user's posts
-    const likeCount = await likeSchema.countDocuments({ postId: { $in: postIds } });
-
-    // Return the like count as a JSON response
-    return res.json(likeCount);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
 //returns a list of posts that an individual user liked
 route.get('/user-likes/:userId', async(req,res) => {
   const likes = await likeSchema.find({userId: req.params.userId}) 
@@ -121,6 +99,19 @@ route.get('/count/likes-for-post/:postId', async(req,res) => {
     res.sendStatus(404).send({message: "Post does not exist"})
   }
 });
+
+route.get('/count/comments-for-post/:postId', async(req,res) => {
+  try{
+    const comments = await commentsSchema.find({ postId: req.params.postId });
+    const commentCount = comments.length; // Count the number of comments in the array
+
+
+    return res.status(200).json(commentCount)
+  }catch{
+    res.sendStatus(404).send({message: "Post does not exist"})
+  }
+});
+
 
 route.get('/views/:postId',async(req,res)=>{
  try {const response = await viewSchema.find({postId : req.params.postId}).count();

@@ -21,8 +21,4 @@ router.get("/user/getUserById", async (req, res) => {
   });
 });
 
-//try comments out whatever is broke make a story
-//change comment model so a comment can comment on a comment.
-//create a pop up that asks the user if they actually wan to delete the comment.
-
 module.exports = router;

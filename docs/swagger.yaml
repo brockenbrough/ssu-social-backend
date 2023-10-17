@@ -114,10 +114,10 @@ paths:
 #
   /user/getAll:
     get:
-      summary: Retrieves all the users.
+      summary: Retrieves all users.
       tags:
         - User
-      description: This retrieves a list of users as JSON objects.
+      description: Retrieves a list of users as JSON objects.
       responses:
         200:
           description: A list of user JSON objects in an array.
@@ -851,7 +851,7 @@ paths:
         - Following
       parameters:
         - in: path
-          name: userid
+          name: id
           required: true
           description: MongoDB id of user
           schema:

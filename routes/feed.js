@@ -178,5 +178,3 @@ router.route("/feed/:username").get(async function (req, res) {
 
 // (DO NOT delete this one)
 module.exports = router;
-
-
