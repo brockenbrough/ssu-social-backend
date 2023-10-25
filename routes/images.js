@@ -44,6 +44,8 @@ router.get('/images/getAll', async (req, res) => {
     })
     
 });
+
+  
 // Define a route to retrieve a specific image by its unique ID.
 router.get('/images/:id', async (req, res) => {
   const imageId = req.params.id;
@@ -68,6 +70,18 @@ router.get('/images/:id', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
+router.delete('/images/:id', async (req, res) => {
+  const objectId = req.params.id; // objectId is the _id
+
+  try {
+    await imageSchema.findByIdAndRemove(objectId);
+    return res.json({ message: 'Image removed successfully' });
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
  
 
 // This is the route that should save the given image.
@@ -88,8 +102,8 @@ router.post('/images/create', upload.single('image'),  async (req, res, next) =>
     // The img field contains the image data.
     // Notice: that we have the image saved twice: once on the server and once in the database.
     const imageToStore = imageSchema({
+        
         name: req.body.name,
-        desc: req.body.desc,
         base64Data: base64Data,  // Add the base64 data to the image schema
         img: {
             data: fs.readFileSync(path.join(pathToUploadedFile)),
