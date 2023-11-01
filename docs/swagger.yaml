@@ -468,6 +468,29 @@ paths:
                 items:
                   $ref: "#/components/schemas/Comment"
 
+  /comments/comment/getCommentById/{postId}:
+    get:
+      summary: Get Comment with given id.
+      description: Retrieves the post as a JSON objects.
+      tags:
+        - Comment
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: The MongoDB id of the post.
+          schema:
+            type: string
+      responses:
+        200:
+          description: The post comment.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
   /comments/comment/add:
     post:
       summary: Create a comment.  How can the comment be created without a post id? Seems broken.
