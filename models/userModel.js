@@ -28,6 +28,11 @@ const newUserSchema = new mongoose.Schema(
       auto: true,
       label: '_id',
     }, 
+    biography: {
+      required: false,
+      type: String,
+      default: ''
+    }
   }, 
   { collection: "users" }
 );
