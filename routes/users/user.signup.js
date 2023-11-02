@@ -10,7 +10,7 @@ router.post('/user/signup', async (req, res) => {
     console.log(error)
     if (error) return res.status(400).send({ message: `One of your signup fields is invalid: ` + error.errors[0].message });
 
-    const { username, email, password } = req.body
+    const { username, email, password, biography } = req.body
 
     //check if email already exists
     const user = await newUserModel.findOne({ username: username })
@@ -28,6 +28,7 @@ router.post('/user/signup', async (req, res) => {
         username: username,
         email: email,
         password: hashPassword,
+        biography: biography,
     });
 
    
