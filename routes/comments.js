@@ -39,15 +39,13 @@ commentRoutes.get("/comments/comment", (req, res) => {
     );
 });
 
-// This section will help you get a single contributor by id.  Does this work? Unclear what it is doing.
-commentRoutes.get("/comments/comment/:id", async (req, res) => {
-    console.log(req.params.postId);
-    comment.findById(req.params.postId)
-      .then(comment => res.status(200).json(comment))
-      .catch((err) =>
-        res.status(404).json({ commentnotfound: "No comment found" })
+// Finds a specific comment by their id. Do "npm test" if you're making any changes to this.
+commentRoutes.get("/comments/comment/:id", (req, res) => {
+  comment.findById(req.params.id)
+    .then((comment) => res.json(comment))
+    .catch((err) =>
+      res.status(404).json({ commentnotfound: "No comment found" })
     );
-
 });
 
 commentRoutes.get("/comments/comment/getCommentById/:postId", async (req,res) => {
