@@ -85,47 +85,43 @@ router.delete('/images/:id', async (req, res) => {
  
 
 // This is the route that should save the given image.
-router.post('/images/create', upload.single('image'),  async (req, res, next) => {
-    // At this point, the image is saved on the server.
+router.post('/images/create', upload.single('image'), async (req, res, next) => {
+  const directoryAbove = path.resolve(__dirname, '..');
+  const pathToUploadedFile = path.resolve(directoryAbove, 'uploads', req.file.filename);
+  const base64Data = fs.readFileSync(pathToUploadedFile, { encoding: 'base64' });
 
-    // We need to get the path to the image.
-    // We expect there to be a folder
-    // called uploads in the root (parallel to routes folder)
-    const directoryAbove = path.resolve(__dirname, '..');
-    const pathToUploadedFile = path.resolve(directoryAbove, 'uploads', req.file.filename);
-
-    // Read the image file as base64 data
-    const base64Data = fs.readFileSync(pathToUploadedFile, { encoding: 'base64' });
-
-
-    // We are building the image model to store on the server.
-    // The img field contains the image data.
-    // Notice: that we have the image saved twice: once on the server and once in the database.
-    const imageToStore = imageSchema({
-        
-        name: req.body.name,
-        base64Data: base64Data,  // Add the base64 data to the image schema
-        img: {
-            data: fs.readFileSync(path.join(pathToUploadedFile)),
-            contentType: 'image/png'
-        }
-    });
-   
-  
-    try {
-      const response = await imageSchema.create(imageToStore);
-      res.json({ msg: 'Image created successfully.' });
-    } catch (err) {
-      console.error('Error creating post:', err);
-      res.status(500).json({ msg: 'Could not create image.' });
+  const imageToStore = imageSchema({
+    name: req.body.name,
+    base64Data: base64Data,
+    img: {
+      data: fs.readFileSync(path.join(pathToUploadedFile)),
+      contentType: 'image/png'
     }
-    fs.unlink(pathToUploadedFile, (err) => {
-      if (err) {
-        console.error('Error deleting file:', err);
-      } else {
-        console.log('File deleted successfully.');
-      }
-    });
+  });
+
+  try {
+    const response = await imageSchema.create(imageToStore);
+    
+    if (response && response._id) {
+      const imageId = response._id; // Getting the ID of the newly created image
+      res.json({ msg: 'Image created successfully.', imageId });
+    } else {
+      // If there's an issue with the response, log an error or send a specific message
+      console.error('Invalid response or _id not found in the response');
+      res.status(500).json({ msg: 'Invalid response from image creation' });
+    }
+  } catch (err) {
+    console.error('Error creating image:', err);
+    res.status(500).json({ msg: 'Could not create image', error: err.message }); // Include the error message in the response
+  }
+
+  fs.unlink(pathToUploadedFile, (err) => {
+    if (err) {
+      console.error('Error deleting file:', err);
+    } else {
+      console.log('File deleted successfully.');
+    }
+  });
 
     // This site was used to help write this code:
     // https://www.geeksforgeeks.org/upload-and-retrieve-image-on-mongodb-using-mongoose/
