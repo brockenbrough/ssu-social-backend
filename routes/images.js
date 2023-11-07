@@ -52,12 +52,11 @@ router.get('/images/:id', async (req, res) => {
 
   try {
     // Use Mongoose to find the image by its ID
-    const image = await imageSchema.findOne({ id: imageId });
+    const image = await imageSchema.findById(imageId);
 
     if (image) {
       // Image found, set the appropriate content type
       res.setHeader('Content-Type', image.img.contentType);
-
       // Send the image data as the response
       return res.send(image.img.data);
     } else {
@@ -70,6 +69,7 @@ router.get('/images/:id', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 router.delete('/images/:id', async (req, res) => {
   const objectId = req.params.id; // objectId is the _id
 

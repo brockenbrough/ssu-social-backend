@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');
-var imageSchema = new mongoose.Schema(
+const mongoose = require('mongoose');
+
+const imageSchema = new mongoose.Schema(
     {
+    
       name: String,
       base64Data: String,
-      img:
-      {
+      img: {
         data: Buffer,
         contentType: String
       }
