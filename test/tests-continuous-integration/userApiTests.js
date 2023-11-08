@@ -54,5 +54,18 @@ describe('Regression Tests: User API', () => {
       });
   });
 
+  //test for duplicate user
+  it('should get an error when a duplicate user is created', (done) => {
+    chai
+      .request(app)
+      .post('/user/signup')
+      .send({ username: 'tochiamanze', email: 'cdon@gmail.com', password: 'tochi12345' })
+      .end((err, res) =>{
+        expect(res).to.have.status.within(400, 401, 403);//expects error, not sure which code is used
+        done();
+      });
+
+  });
+
   // Add more tests for other API endpoints (PUT, DELETE, etc.)
 });
