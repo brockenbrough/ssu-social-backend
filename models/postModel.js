@@ -16,9 +16,10 @@ const newPostSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
-    img: {          // Stores the image data and its content type.
-      data: Buffer,         // Binary image data stored as a Buffer.
-      contentType: String   // Content type of the image (e.g., image/jpeg).
+    
+    imageId: {
+      type: String,
+      required: false,
     },
 
     date: {
