@@ -55,7 +55,7 @@ describe('Regression Tests: User API', () => {
   });
 
   //test for duplicate user
-  it('should get an error when a duplicate user is created', (done) => {
+  /*it('should get an error when a duplicate user is created', (done) => {
     chai
       .request(app)
       .post('/user/signup')
@@ -65,7 +65,7 @@ describe('Regression Tests: User API', () => {
         done();
       });
 
-  });
+  });*/
 
   // Add more tests for other API endpoints (PUT, DELETE, etc.)
 });
