@@ -19,6 +19,7 @@ const newPostSchema = new mongoose.Schema(
     
     imageId: {
       type: String,
+      label: "imageId",
       required: false,
     },
 

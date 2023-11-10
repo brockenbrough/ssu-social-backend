@@ -4,13 +4,13 @@ const newPostModel = require('../../models/postModel');
 const mongoose = require("mongoose");
 
 router.post("/posts/createPost", async (req, res) => {
-  const { id, username, content, imageId} = req.body;
+  const { id, username, content, imageId } = req.body;
 
   const createNewPost = newPostModel({
-    userId : mongoose.Types.ObjectId(id),
+    userId: mongoose.Types.ObjectId(id),
     username: username,
     content: content,
-    imageId: String,
+    imageId: imageId, 
   });
 
   try {
