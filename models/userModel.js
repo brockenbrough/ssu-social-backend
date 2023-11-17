@@ -22,6 +22,11 @@ const newUserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+      imageId: {
+        type: String,
+        label: "imageId",
+        required: false,
+      },
     _id: {
       required: true,
       type : mongoose.Schema.Types.ObjectId,
