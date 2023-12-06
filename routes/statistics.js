@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const commentsSchema = require("../models/commentsModel");
+const newPostModel = require("../models/postModel");
 
 const likeSchema = require("../models/like");
 const viewSchema = require("../models/view");
@@ -77,6 +78,30 @@ route.delete('/likes/unLike', async(req,res) =>{
 /**
  * Get functions for counting likes and views for users and posts
  */
+
+
+route.get('/user-totallikes/:username', async (req, res) => {
+  const {username} = req.params;
+
+  try {
+    // Find all posts created by the user
+
+    const userPosts = await newPostModel.find({ username: username });
+
+    // Extract the post IDs from the user's posts
+    const postIds = userPosts.map(post => post._id);
+
+    // Find the count of likes associated with the user's posts
+    const likeCount = await likeSchema.countDocuments({ postId: { $in: postIds } });
+
+    // Return the like count as a JSON response
+    return res.json(likeCount);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 //Count the amount of posts a user liked
 route.get('/count/likes-by-user/:userId', async(req,res) => {
