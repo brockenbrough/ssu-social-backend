@@ -63,7 +63,7 @@ describe('Regression Tests: Followers', () => { //This was the updated test
         targetUserId: '64fb4f5573e33130dc65e7b3',
       };
       chai
-        .request(app)
+        .request(a
         .post('/followers/follow')
         .send(newFollowers)
         .end((err, res) => {
