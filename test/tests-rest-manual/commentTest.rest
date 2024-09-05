@@ -1,6 +1,6 @@
 // Get all comments
 ###
-GET http://localhost:8095/comments/comment
+GET http://localhost:8095/comment
 Content-Type: application/json
 
 // Add a comment
