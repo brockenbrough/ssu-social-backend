@@ -429,7 +429,7 @@ paths:
 #
 # Comments
 #
-  /comments/comment:
+  /comment:
     get:
       summary: Retrieves all comments.
       description: Retrieves a list of all comments as JSON objects.

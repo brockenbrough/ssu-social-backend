@@ -31,7 +31,7 @@ commentRoutes.post("/comments/comment/reply/:id", async (req, res) => {
 
 });
 // This section will help you get a list of all the comments.
-commentRoutes.get("/comments/comment", (req, res) => {
+commentRoutes.get("/comment", (req, res) => {
   comment.find()
   .then((comments) => res.json(comments))
     .catch((err) =>
