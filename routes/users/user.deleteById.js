@@ -2,18 +2,28 @@ const express = require('express');
 const router = express.Router();
 const newUserModel = require("../../models/userModel");
 
-router.post('/user/deleteById', async (req, res) => {
-    const { userId } = req.body;
-    
+router.delete('/user/deleteById/:verifiedId/:id', async (req, res) => {
+  
+    const { id: userId } = req.params;  // Retrieve userId from URL params
+    const { verifiedId: verifiedUserId } = req.params;
+
     try {
-      const user = await newUserModel.findByIdAndDelete(userId);
-      if (!user) {
-        return res.status(404).send("User not found");
+      // Verify that the userId exists in the database
+      const verifiedUser = await newUserModel.findById(verifiedUserId);
+      if (!verifiedUser) {
+        return res.status(404).json({ message: "Verified ID not found" });
       }
-      return res.json(user);
+
+      // Proceed to delete the user
+      const deletedUser = await newUserModel.findByIdAndDelete(userId);
+      if (!deletedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      return res.json({ message: "User deleted successfully", deletedUser });
     } catch (error) {
       console.error(error);
-      return res.status(500).send("Internal server error");
+      return res.status(500).json({ message: "Internal server error" });
     }
 });
 
