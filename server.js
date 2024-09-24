@@ -35,6 +35,8 @@ app.use(require('./routes/users/user.refresh-token'))
 app.use(require('./routes/statistics'))
 app.use(require('./routes/users/user.deleteById'))
 
+app.use(require('./routes/users/user.generateToken'))
+
 
 // get driver connection
 const connectDB = require("./db/conn");
