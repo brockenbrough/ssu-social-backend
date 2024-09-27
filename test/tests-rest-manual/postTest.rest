@@ -14,16 +14,29 @@ Content-Type: application/json
 GET http://localhost:8095/posts/getAllByUsername/:username
 Content-Type: application/json
 
-//Create a Post
+
+//Create a Post using an access token (do /get-token in URL)
 ###
 POST http://localhost:8095/posts/createPost
-Content-Type: application/json 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjZmYjc2NzdjZGNkODAxYWRlM2UzNiIsImVtYWlsIjoiZW1haWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ1c2VybmFtZTIiLCJpYXQiOjE3Mjc0NjQyNzMsImV4cCI6MTcyNzQ2Nzg3M30.cgff-lYByEQAkhwVn6q3yF5axIoCLEvzslih1eaqQlA
 
 {
-    "username" : "Dog 2",
-    "content": "I am a testing body in .rest"
-    
+  "content": "This is a test post.",
+  "imageId": "60d21b4667d0d8992e610c85"
 }
+
+
+//Create post without an access token (should fail)
+###
+POST http://localhost:8095/posts/createPost
+Content-Type: application/json
+
+{
+  "content": "This post should fail due to missing token.",
+  "imageId": "60d21b4667d0d8992e610c85"
+}
+
 
 //Delete a Post
 ###
