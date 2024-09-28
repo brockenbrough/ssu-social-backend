@@ -37,18 +37,16 @@ app.use(require('./routes/users/user.deleteById'))
 
 app.use(require('./routes/users/user.generateToken'))
 
-
 // get driver connection
 const connectDB = require("./db/conn");
  
-console.log(`The node environment is: ${process.env.NODE_ENV}`);
 
 // Production environment: connect to the database and start listening for requests
 if (process.env.NODE_ENV !== "test") {
     connectDB();
     app.listen(port, () => {
       setTimeout(() => {
-        console.log(`All services are running on port: ${port}`);
+        console.log(`Your backend is running on port ${port}`);
       }, 1000); // Add a 1-second delay
     });
 }
