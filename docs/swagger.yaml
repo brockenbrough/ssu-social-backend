@@ -104,6 +104,23 @@ components:
           type: string
         postId:
           type: string
+          
+    Image:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the image
+          example: "profile-pic.png"
+        url:
+          type: string
+          description: URL where the image is hosted (on S3)
+          example: "https://your-s3-bucket-url.com/profile-pic.png"
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the image was uploaded
+          example: "2024-09-19T12:34:56Z"
 
 
     
@@ -196,25 +213,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-
-
-  /user/login:
-    post:
-      summary: Login a user.
-      tags:
-        - User
-      description: Login a User in order to get JWT token (auth-token)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
 
   /user/editUser:
     post:
@@ -310,24 +308,27 @@ paths:
                   $ref: "#/components/schemas/Post"
 
   /posts/getAllByUsername/{username}:
-    get:
-      summary: Get all posts made by a given user.
-      description: Retrieves a list of posts as JSON objects.
-      tags:
-        - Post
-      parameters:
-        - in: path
-          name: username
-          required: true
-          description: The name of the user.
-          schema:
-            type: string
-      responses:
-        200:
-          description: A list of posts as JSON objects
-          content:
-            application/json:
-              schema:
+  get:
+    summary: Get all posts made by a given user.
+    description: Retrieves a list of posts as JSON objects.
+    tags:
+      - Post
+    parameters:
+      - in: path
+        name: username
+        required: true
+        description: The name of the user.
+        schema:
+          type: string
+    responses:
+      200:
+        description: A list of posts as JSON objects
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Post"
     post:
       summary: A very confused API endpoint.  Seems to be a duplicate of /posts/createPost.
       tags:
@@ -429,7 +430,7 @@ paths:
 #
 # Comments
 #
-  /comments/comment:
+  /comment:
     get:
       summary: Retrieves all comments.
       description: Retrieves a list of all comments as JSON objects.
@@ -1156,4 +1157,35 @@ paths:
                 properties:
                   msg:
                     type: string
-
+#
+# Images
+#
+  /images/create:
+  post:
+    summary: Upload an image
+    description: Uploads an image to Amazon S3 and saves the image URL in the database.
+    tags:
+      - Image
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                format: binary
+                description: The image file to upload.
+              name:
+                type: string
+                description: The name of the image.
+    responses:
+      200:
+        description: Image uploaded successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      500:
+        description: Server error

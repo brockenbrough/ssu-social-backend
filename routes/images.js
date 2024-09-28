@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 const mongoose = require('mongoose');
 const imageSchema = require('../models/imageModel');
 const fs = require('fs');
@@ -20,7 +19,6 @@ const storage = multer.diskStorage({
 });
  
 const upload = multer({ storage: storage });
-
 // Route to retreive all images stored on the server.
 // It returns the images in JSON format.
 // The routs is /images  (maybe we move this to a different file).)
@@ -30,7 +28,6 @@ router.get('/images/getAll', async (req, res) => {
         if(err){
             console.log(err);
         }
-
         // We want to return this data as a JSON object to the caller.
         return res.status(200).json(data)
 
@@ -49,11 +46,9 @@ router.get('/images/getAll', async (req, res) => {
 // Define a route to retrieve a specific image by its unique ID.
 router.get('/images/:id', async (req, res) => {
   const imageId = req.params.id;
-
   try {
     // Use Mongoose to find the image by its ID
     const image = await imageSchema.findById(imageId);
-
     if (image) {
       // Image found, set the appropriate content type
       res.setHeader('Content-Type', image.img.contentType);
@@ -72,7 +67,6 @@ router.get('/images/:id', async (req, res) => {
 
 router.delete('/images/:id', async (req, res) => {
   const objectId = req.params.id; // objectId is the _id
-
   try {
     await imageSchema.findByIdAndRemove(objectId);
     return res.json({ message: 'Image removed successfully' });
@@ -81,15 +75,12 @@ router.delete('/images/:id', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
-
  
-
 // This is the route that should save the given image.
 router.post('/images/create', upload.single('image'), async (req, res, next) => {
   const directoryAbove = path.resolve(__dirname, '..');
   const pathToUploadedFile = path.resolve(directoryAbove, 'uploads', req.file.filename);
   const base64Data = fs.readFileSync(pathToUploadedFile, { encoding: 'base64' });
-
   const imageToStore = imageSchema({
     name: req.body.name,
     base64Data: base64Data,
@@ -98,7 +89,6 @@ router.post('/images/create', upload.single('image'), async (req, res, next) => 
       contentType: 'image/png'
     }
   });
-
   try {
     const response = await imageSchema.create(imageToStore);
     
@@ -114,7 +104,6 @@ router.post('/images/create', upload.single('image'), async (req, res, next) => 
     console.error('Error creating image:', err);
     res.status(500).json({ msg: 'Could not create image', error: err.message }); // Include the error message in the response
   }
-
   fs.unlink(pathToUploadedFile, (err) => {
     if (err) {
       console.error('Error deleting file:', err);
@@ -122,7 +111,6 @@ router.post('/images/create', upload.single('image'), async (req, res, next) => 
       console.log('File deleted successfully.');
     }
   });
-
     // This site was used to help write this code:
     // https://www.geeksforgeeks.org/upload-and-retrieve-image-on-mongodb-using-mongoose/
 });

@@ -27,12 +27,12 @@ beforeEach(async () => {
 describe('Regression Tests: Comments', () => {
     let commentId = '';
     
-    // Test for GET request to '/comments/comment'
+    // Test for GET request to '/comment'
     // Expected there are no comments since this is a new database.
     it('should get no comments', (done) => {
       chai
         .request(app)
-        .get('/comments/comment')
+        .get('/comment')
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('array');
@@ -60,12 +60,12 @@ describe('Regression Tests: Comments', () => {
         });
     });
 
-    // Test for GET request to '/comments/comment'
+    // Test for GET request to '/comment'
     // Expected there is one comment now in the database.
     it('should get one comment', (done) => {
       chai
         .request(app)
-        .get('/comments/comment')
+        .get('/comment')
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('array');
