@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema(
-    {
-    
-      name: String,
-      base64Data: String,
-      img: {
-        data: Buffer,
-        contentType: String
-      }
+  {
+    name: { 
+      type: String, 
+      required: true 
     },
-    { collection: "image_vault", versionKey: false }
+    uri: {  // Using `uri` to store the S3 URI of the image
+      type: String, 
+      required: true 
+    },  
+  },
+  { collection: "imagevault", versionKey: false }
 );
 
 module.exports = mongoose.model('Image', imageSchema);

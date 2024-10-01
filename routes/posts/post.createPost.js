@@ -5,16 +5,17 @@ const mongoose = require("mongoose");
 const verifyToken = require('../../user-middleware/auth')
 
 router.post("/posts/createPost", verifyToken, async (req, res) => {
-  const { content, imageId } = req.body;
+  const { content, imageUri } = req.body;
 
-  // Get user information from token
+  console.log("Received imageUri:", imageUri);  // Debugging log to check if imageUri is passed
+
   const { id, username } = req.user;
 
   const createNewPost = newPostModel({
     userId: mongoose.Types.ObjectId(id),
     username: username,
     content: content,
-    imageId: imageId, 
+    imageUri: imageUri,  // Ensure imageUri is stored in the post object
   });
 
   try {
