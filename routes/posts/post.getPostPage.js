@@ -3,8 +3,8 @@ const router = express.Router();
 const Post = require("../../models/postModel");
 
 router.get("/posts/getPostPage", async (req, res) => {
-  const DEFAULT_POST_PER_PAGE = 10;
   const INITIAL_PAGE = 1;
+  const DEFAULT_POST_PER_PAGE = 10;
 
   const page = parseInt(req.query.page) || INITIAL_PAGE;
   const postsPerPage = parseInt(req.query.postPerPage) || DEFAULT_POST_PER_PAGE;
