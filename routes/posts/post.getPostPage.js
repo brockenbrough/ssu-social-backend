@@ -11,6 +11,7 @@ router.get("/posts/getPostPage", async (req, res) => {
 
   try {
     const posts = await Post.find()
+      .sort({ date: -1 })
       .skip((page - 1) * postsPerPage)
       .limit(postsPerPage);
 
