@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const newPostModel = require('../../models/postModel');
+const imageModel = require('../../models/imageModel'); // Import image model
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
 // Configure AWS S3 SDK with v3
@@ -42,6 +43,10 @@ router.delete("/posts/deletePost/:postId", async (req, res) => {
     // If the post has an image, delete it from S3
     if (post.imageUri) {
       await deleteImageFromS3(post.imageUri);
+
+      // Also delete the corresponding image document from MongoDB
+      await imageModel.findOneAndDelete({ uri: post.imageUri });
+      console.log(`Image document with URI ${post.imageUri} removed from MongoDB`);
     }
 
     // Delete the post from the database
