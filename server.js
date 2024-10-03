@@ -22,6 +22,7 @@ app.use(require("./routes/posts/post.createPost"));
 app.use(require("./routes/posts/post.deletePost"));
 app.use(require("./routes/posts/post.getAllPosts"));
 app.use(require("./routes/posts/post.getPostPage"));
+app.use(require("./routes/posts/post.getPostPageByUsername"));
 app.use(require("./routes/posts/post.getPostById"));
 app.use(require("./routes/posts/post.updatePost"));
 app.use(require("./routes/images"));
