@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const newPostModel = require('../../models/postModel');
-const AWS = require('aws-sdk');
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
-// Configure AWS S3 SDK
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+// Configure AWS S3 SDK with v3
+const s3Client = new S3Client({
   region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 });
 
 // Function to delete the image from S3
@@ -19,7 +21,8 @@ const deleteImageFromS3 = async (imageUri) => {
   };
 
   try {
-    await s3.deleteObject(params).promise();
+    const command = new DeleteObjectCommand(params);
+    await s3Client.send(command);
     console.log(`Image ${imageKey} deleted from S3`);
   } catch (error) {
     console.error('Error deleting image from S3:', error);
