@@ -24,7 +24,6 @@ const deleteImageFromS3 = async (imageUri) => {
   try {
     const command = new DeleteObjectCommand(params);
     await s3Client.send(command);
-    console.log(`Image ${imageKey} deleted from S3`);
   } catch (error) {
     console.error('Error deleting image from S3:', error);
   }
@@ -46,7 +45,6 @@ router.delete("/posts/deletePost/:postId", async (req, res) => {
 
       // Also delete the corresponding image document from MongoDB
       await imageModel.findOneAndDelete({ uri: post.imageUri });
-      console.log(`Image document with URI ${post.imageUri} removed from MongoDB`);
     }
 
     // Delete the post from the database
