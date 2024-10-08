@@ -7,8 +7,6 @@ const verifyToken = require('../../user-middleware/auth')
 router.post("/posts/createPost", verifyToken, async (req, res) => {
   const { content, imageUri } = req.body;
 
-  console.log("Received imageUri:", imageUri);  // Debugging log to check if imageUri is passed
-
   const { id, username } = req.user;
 
   const createNewPost = newPostModel({
