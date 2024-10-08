@@ -32,39 +32,17 @@ async function getAllPostsByUserId(userId) {
 }
 
 // Feed sorting algorithm
-// Takes an array of post ID strings as input and returns post IDs in a sorted array of strings
+// Takes an array of post objects (containing both post ID and date) as input and returns post IDs in a sorted array of strings
 async function sortPosts(posts) {
-  const likes = await getLikes();
-
-  var weights = [];
-  for (i = 0; i < posts.length; i++) {
-    let postObj = {
-      postID: posts[i],
-      likes: 0,
-      weight: 0,
-    };
-    weights.push(postObj);
-  }
-
-  for (i = 0; i < posts.length; i++) {
-    for (j = 0; j < likes.length; j++) {
-      if (likes[j].postId == posts[i]) {
-        weights[i].likes += 1;
-      }
-    }
-  }
-
-  for (i = 0; i < weights.length; i++) {
-    weights[i].weight = weights[i].likes;
-  }
-
-  weights.sort(function (a, b) {
-    return b.weight - a.weight;
+  // Sort by date in descending order (newest first)
+  posts.sort(function (a, b) {
+    return new Date(b.date) - new Date(a.date); // Compare post dates (handles both date and time)
   });
 
+  // Extract sorted post IDs
   var sortedIDs = [];
   for (i = 0; i < posts.length; i++) {
-    sortedIDs[i] = weights[i].postID;
+    sortedIDs[i] = posts[i]._id;
   }
 
   return sortedIDs;
@@ -80,12 +58,8 @@ function paginate(startingPosition, pageSize, posts) {
 router.route("/feed").get(async function (req, res) {
   const posts = await getPosts();
 
-  var postIDs = [];
-  for (i = 0; i < posts.length; i++) {
-    postIDs[i] = posts[i]._id;
-  }
-
-  const sortedPosts = await sortPosts(postIDs);
+  // Pass the full posts array (with _id and date) directly to the sortPosts function
+  const sortedPosts = await sortPosts(posts);
 
   let obj = {
     feed: sortedPosts,
@@ -110,12 +84,9 @@ router
           "Error: invalid starting position and/or page size, starting position and page size must be a number."
         );
     }
-    var postIDs = [];
-    for (i = 0; i < posts.length; i++) {
-      postIDs[i] = posts[i]._id;
-    }
 
-    const sortedPosts = await sortPosts(postIDs);
+    // Pass the full posts array (with _id and date) directly to the sortPosts function
+    const sortedPosts = await sortPosts(posts);
     const page = paginate(startingPosition, pageSize, sortedPosts);
 
     let obj = {
@@ -161,13 +132,11 @@ router.route("/feed/:username").get(async function (req, res) {
     }
   }
 
-  followingUsersPosts.map(e => {
-    e.map(e => {
-      postIDs.push(e._id);
-    })
-  })
+  // Flatten followingUsersPosts to a single array of posts
+  followingUsersPosts = followingUsersPosts.flat();
 
-  const sortedPosts = await sortPosts(postIDs);
+  // Pass the full posts array (with _id and date) directly to the sortPosts function
+  const sortedPosts = await sortPosts(followingUsersPosts);
 
   let obj = {
     feed: sortedPosts,
