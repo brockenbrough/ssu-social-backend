@@ -38,10 +38,34 @@ Content-Type: application/json
 }
 
 
-//Delete a Post
+// Delete a Post using a valid access token
 ###
-DELETE http://localhost:8095/posts/deletePost/:id
-Content-Type: application/json 
+DELETE http://localhost:8095/posts/deletePost/66ff3de4679ebb25154dc18f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1NDQ2OTQ1NzA0NGM1ZTExYiIsImVtYWlsIjoidXNlcm5hbWVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0ZXN0bmFtZTIiLCJpYXQiOjE3Mjg0MDU3NjMsImV4cCI6MTcyODQwOTM2M30.jnfz1IH-vBrCYwQZ-4tsdFONcKnnFnocHHB0tezzr9o
+
+// No body required for this request
+
+// Try to delete a Post without an access token (should fail)
+###
+DELETE http://localhost:8095/posts/deletePost/6705610916fe74a24a7d6e16
+
+// No Authorization header
+// No body required for this request
+
+// Try to delete a Post using an invalid token (should fail)
+###
+DELETE http://localhost:8095/posts/deletePost/66ff3de4679ebb25154dc18f
+Authorization: Bearer invalid_or_expired_token
+
+// No body required for this request
+
+// Try to delete a Post that is not owned by the authenticated user (should fail)
+###
+DELETE http://localhost:8095/posts/deletePost/66f703e4465d2875b5d7a08e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1NDQ2OTQ1NzA0NGM1ZTExYiIsImVtYWlsIjoidXNlcm5hbWVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0ZXN0bmFtZTIiLCJpYXQiOjE3Mjg0MDU3NjMsImV4cCI6MTcyODQwOTM2M30.jnfz1IH-vBrCYwQZ-4tsdFONcKnnFnocHHB0tezzr9o
+
+// No body required for this request
+
 
 
 //Update a Post
