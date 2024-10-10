@@ -67,10 +67,44 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1N
 // No body required for this request
 
 
-
-//Update a Post
+// Update a Post using a valid access token
 ###
-PUT http://localhost:8095/posts/updatePost/:id
-Accept: application/json 
+PUT http://localhost:8095/posts/updatePost/67080309cc875d865137601a
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1NDQ2OTQ1NzA0NGM1ZTExYiIsImVtYWlsIjoidXNlcm5hbWVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0ZXN0bmFtZTIiLCJpYXQiOjE3Mjg1NzgwMjQsImV4cCI6MTcyODU4MTYyNH0.kNlxMWBxq6oRkaQmTB8bjThD1GtsGotywIe6VMOYqF4
+
+{
+  "content": "Updated post content",
+  "imageUri": "newImageUri"
+}
+ 
+// Try to update a Post without an access token (should fail)
+###
+PUT http://localhost:8095/posts/updatePost/67080309cc875d865137601a
+Content-Type: application/json
+
+{
+  "content": "This update should fail due to missing token."
+}
+
+// Try to update a Post using an invalid token (should fail)
+###
+PUT http://localhost:8095/posts/updatePost/67080309cc875d865137601a
+Content-Type: application/json
+Authorization: Bearer invalid_or_expired_token
+
+{
+  "content": "This update should fail due to invalid token."
+}
+
+// Try to update a Post that is not owned by the authenticated user (should fail)
+###
+PUT http://localhost:8095/posts/updatePost/66f7051e465d2875b5d7a0b5
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1NDQ2OTQ1NzA0NGM1ZTExYiIsImVtYWlsIjoidXNlcm5hbWVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0ZXN0bmFtZTIiLCJpYXQiOjE3Mjg1NzgwMjQsImV4cCI6MTcyODU4MTYyNH0.kNlxMWBxq6oRkaQmTB8bjThD1GtsGotywIe6VMOYqF4
+
+{
+  "content": "This update should fail due to unauthorized user."
+}
 
 ###
