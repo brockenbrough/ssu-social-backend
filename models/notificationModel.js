@@ -17,19 +17,17 @@ const notificationSchema = new mongoose.Schema(
       required: true,
     },
 
-    isRead: {
-      type: Boolean,
-      default: false,
+    actionUsername: {
+      type: String,
       required: true,
     },
 
-    postId: {
-      type: String,
-      default: null,
-      required: false,
+    isRead: {
+      type: Boolean,
+      default: false,
     },
 
-    followerUsername: {
+    postId: {
       type: String,
       default: null,
       required: false,

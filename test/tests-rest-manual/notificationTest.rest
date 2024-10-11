@@ -1,0 +1,199 @@
+### 1. Should pass: create notification for "like" with valid username, actionUsername, and postId
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "elephant liked your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 2. Should pass: create notification for "comment" with valid username, actionUsername, and postId
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "comment",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "elephant commented on your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 3. Should pass: create notification for "follow" with valid username and actionUsername
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "follow",
+    "username": "elephant", 
+    "actionUsername": "testtest",
+    "text": "testtest followed you"
+}
+
+###
+
+### 4. Should fail: missing required field (username)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "actionUsername": "elephant",
+    "text": "elephant liked your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 5. Should fail: missing required field (actionUsername)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "username": "testtest", 
+    "text": "liked your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 6. Should fail: missing required field (text)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "comment",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 7. Should fail: missing required field (type)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "elephant liked your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 8. Should fail: empty text field
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 9. Should fail: missing postId for "like"
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "elephant liked your post"
+}
+
+###
+
+### 10. Should fail: missing postId for "comment"
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "comment",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "elephant commented on your post"
+}
+
+###
+
+### 11. Should fail: invalid type (type not 'like', 'comment', or 'follow')
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "share",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "elephant shared your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 12. Should fail: invalid username (username does not exist)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "username": "nonexistentuser", 
+    "actionUsername": "elephant",
+    "text": "liked your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 13. Should fail: invalid actionUsername (actionUsername does not exist)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "like",
+    "username": "testtest", 
+    "actionUsername": "nonexistentuser",
+    "text": "liked your post",
+    "postId": "66fcd358d380bc626251e39c"
+}
+
+###
+
+### 14. Should fail: invalid postId (post does not exist)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "comment",
+    "username": "testtest", 
+    "actionUsername": "elephant",
+    "text": "commented on your post",
+    "postId": "00fcd000d000bc000000e00c"
+}
+
+###
+
+### 15. Should pass: create notification for "follow" (no postId required)
+POST http://localhost:8095/notification
+Content-Type: application/json
+
+{
+    "type": "follow",
+    "username": "elephant", 
+    "actionUsername": "testtest",
+    "text": "testtest followed you"
+}
