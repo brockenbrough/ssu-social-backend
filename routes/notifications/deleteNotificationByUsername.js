@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const notificationModel = require("../../models/notificationModel");
 
-router.delete("/notification/deleteByUsername", async (req, res) => {
-  const { username } = req.body;
+router.delete("/notification/deleteByUsername/:username", async (req, res) => {
+  const { username } = req.params;
 
   if (!username) {
     return res.status(400).json({ error: "Username is required." });

@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const notificationModel = require("../../models/notificationModel");
 
-router.delete("/notification/deleteById", async (req, res) => {
-  const { id } = req.body;
+router.delete("/notification/deleteById/:id", async (req, res) => {
+  const { id } = req.params;
 
   if (!id) {
     return res.status(400).json({ error: "Notification ID is required." });

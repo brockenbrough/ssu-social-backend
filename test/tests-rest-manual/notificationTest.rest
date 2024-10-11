@@ -252,45 +252,29 @@ Content-Type: application/json
 
 # 22. Should pass: Delete notification by ID
 ###
-DELETE http://localhost:8095/notification/deleteById
+DELETE http://localhost:8095/notification/deleteById/67086904bb79fdd55952ccc5
 Content-Type: application/json
-
-{
-    "id": "67086904bb79fdd55952ccc5"
-}
 
 # 23. Should fail: Missing notification ID
 ###
-DELETE http://localhost:8095/notification/deleteById
+DELETE http://localhost:8095/notification/deleteById/text
 Content-Type: application/json
 
-{
-    "text": "This should fail"
-}
 
 # 24. Should pass: Delete all notifications by username
 ###
-DELETE http://localhost:8095/notification/deleteByUsername
+DELETE http://localhost:8095/notification/deleteByUsername/testtest
 Content-Type: application/json
 
-{
-    "username": "testtest"
-}
 
 # 25. Should fail: Missing username
 ###
-DELETE http://localhost:8095/notification/deleteByUsername
+DELETE http://localhost:8095/notification/deleteByUsername/
 Content-Type: application/json
 
-{
-    "text": "This should fail"
-}
 
 # Should pass: for the given username that does not exist 
 ###
-DELETE http://localhost:8095/notification/deleteByUsername
+DELETE http://localhost:8095/notification/deleteByUsername/nonexistentUser
 Content-Type: application/json
 
-{
-    "username": "nonexistentUser"
-}
