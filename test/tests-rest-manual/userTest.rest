@@ -21,8 +21,23 @@ Content-Type: application/json
 GET http://localhost:8095/user/getAll
 Content-Type: application/json
 
-###
 
+// Update a User using a valid access token
+### Edit User Information
+PUT http://localhost:8095/user/editUser
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1NDQ2OTQ1NzA0NGM1ZTExYiIsImVtYWlsIjoidXNlcm5hbWVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0ZXN0bmFtZTIiLCJpYXQiOjE3Mjg2NzQ4MzksImV4cCI6MTcyODY3ODQzOX0.HJPtsImfj3JbD_eDT3Gs_X5b2a2qJjh-jhPYetUfUAE
+
+{
+  "username": "updatedUsername",
+  "email": "updatedemail@gmail.com",
+  "password": "newPassword123",
+  "biography": "This is my updated bio."
+}
+
+
+
+###
 POST http://localhost:8095/user/editUser
 Content-Type: application/json 
 
