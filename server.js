@@ -27,6 +27,7 @@ app.use(require("./routes/posts/post.getPostById"));
 app.use(require("./routes/posts/post.updatePost"));
 app.use(require("./routes/notifications/createNotification"));
 app.use(require("./routes/notifications/getNotificationByUsername"));
+app.use(require("./routes/notifications/updateNotification"));
 app.use(require("./routes/images"));
 app.use(require("./routes/posts/post.getAllByUsername"));
 app.use(require("./routes/users/user.login"));
