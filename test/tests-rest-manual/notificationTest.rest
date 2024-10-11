@@ -197,3 +197,15 @@ Content-Type: application/json
     "actionUsername": "testtest",
     "text": "testtest followed you"
 }
+
+# 16. Should pass: Fetch notifications for user 'testtest'
+###
+GET http://localhost:8095/notification/testtest
+Content-Type: application/json
+
+
+# 17. Should pass: Fetch empty notifications found for user 'nonexistentUser'
+###
+GET http://localhost:8095/notification/nonexistentUser
+Content-Type: application/json
+###
