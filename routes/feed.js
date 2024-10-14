@@ -115,20 +115,29 @@ router.route("/feed/:username").get(async function (req, res) {
     return res.status(400).send("Error: invalid username");
   }
 
+  // Fetch the posts of the logged-in user
+  try {
+    usersPosts = await getAllPostsByUserId(username);
+    followingUsersPosts.push(usersPosts);
+  } catch (e) {
+    console.log("The logged-in user has not made any posts.");
+  }
+
   if (following[0] == null) {
     return res
       .status(400)
-      .send("Error: Username was found this person does not follow anyone.");
+      .send("Error: Username was found, but this person does not follow anyone.");
   }
 
   const followingList = following[0].following;
 
+  // Fetch the posts of each user the logged-in user follows
   for (i = 0; i < followingList.length; i++) {
     try {
       userPosts = await getAllPostsByUserId(followingList[i]);
       followingUsersPosts.push(userPosts);
     } catch (e) {
-      console.log("Issue with user " + followingList[i] + " user has not made any posts");
+      console.log("Issue with user " + followingList[i] + ": user has not made any posts");
     }
   }
 
