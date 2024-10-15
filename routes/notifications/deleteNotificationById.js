@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../../user-middleware/auth");
 const notificationModel = require("../../models/notificationModel");
 
-router.delete("/notification/deleteById/:id", async (req, res) => {
+router.delete("/notification/deleteById/:id", verifyToken, async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
