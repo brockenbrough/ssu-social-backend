@@ -73,3 +73,6 @@ DELETE http://localhost:8095/user/deleteById/66ec5a2dd78bf612a9821748/66ec5a2dd7
 DELETE http://localhost:8095/user/deleteById/66f20976796cd5ea93c0bd53
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjIwOTc2Nzk2Y2Q1ZWE5M2MwYmQ1MyIsImVtYWlsIjoiZW1haWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ1c2VybmFtZSIsImlhdCI6MTcyNzE0MTkzNywiZXhwIjoxNzI3MTQ1NTM3fQ.uNH1nfGZnbstMFeI3FifQ7-8Q1PgGcKbIUv3CWMlzi8
 Content-Type: application/json
+
+### Get user by username
+GET http://localhost:8095/user/getUserByUsername/jacobb12345
