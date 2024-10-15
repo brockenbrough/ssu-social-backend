@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../../user-middleware/auth");
 const notificationModel = require("../../models/notificationModel");
 
-router.put("/notification", async (req, res) => {
+router.put("/notification", verifyToken, async (req, res) => {
   const { id, text, isRead } = req.body;
 
   if (!id) {

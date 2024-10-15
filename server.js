@@ -39,6 +39,7 @@ app.use(require("./routes/users/user.getuserById"));
 app.use(require("./routes/users/user.editUser"));
 app.use(require("./routes/users/user.deleteall"));
 app.use(require("./routes/users/user.refresh-token"));
+app.use(require("./routes/users/user.getUserByUsername"))
 app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
 

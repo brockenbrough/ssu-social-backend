@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../../user-middleware/auth");
 
 const notificationModel = require("../../models/notificationModel");
 
-router.get("/notification/:username", async (req, res) => {
+router.get("/notification/:username", verifyToken, async (req, res) => {
   const username = req.params.username;
 
   try {

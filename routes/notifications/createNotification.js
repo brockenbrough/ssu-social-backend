@@ -66,7 +66,7 @@ const isValidData = async (data) => {
   return { isValidData: true, msg: "Success" };
 };
 
-router.post("/notification/", async (req, res) => {
+router.post("/notification/", verifyToken, async (req, res) => {
   let { type, text, username, isRead, postId, actionUsername } = req.body;
   type = type ? type.trim() : type;
   text = text ? text.trim() : text;
