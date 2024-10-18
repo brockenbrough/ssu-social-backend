@@ -1,10 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const newUserModel = require("../../models/userModel");
+const { S3Client, HeadObjectCommand } = require('@aws-sdk/client-s3');
 
+// AWS S3 client setup
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 router.get("/user/getUserByUsername/:username", async (req, res) => {
   const { username } = req.params;
+  const defaultProfileImageUrl = "https://ssusocial.s3.amazonaws.com/profilepictures/ProfileIcon.png"; // Default profile picture URL
 
   try {
     // Find user by username
@@ -14,14 +24,33 @@ router.get("/user/getUserByUsername/:username", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const { _id, biography, profileImage } = user;
+    let profileImage = user.profileImage || defaultProfileImageUrl;
+
+    // If the user has a profile image, check if it still exists in S3
+    if (user.profileImage) {
+      const imageKey = new URL(user.profileImage).pathname.substring(1); // Extract the S3 key from the URL
+
+      try {
+        // Check if the image exists in S3
+        const headCommand = new HeadObjectCommand({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: imageKey,
+        });
+        await s3Client.send(headCommand);
+      } catch (error) {
+        if (error.name === 'NotFound') {
+          // If the image does not exist in S3, use the default profile image
+          profileImage = defaultProfileImageUrl;
+        }
+      }
+    }
 
     // Return user data (excluding sensitive information like password)
     return res.json({
-      _id,
-      username,
-      biography,
-      profileImage,
+      _id: user._id,
+      username: user.username,
+      biography: user.biography,
+      profileImage: profileImage,
     });
   } catch (error) {
     console.error("Error fetching user by username:", error.message);

@@ -78,16 +78,20 @@ router.post('/profile/upload', upload.single('profileImage'), async (req, res) =
 
     // If the user already has a profile image, delete the old image from S3
     if (user.profileImage) {
-      const oldProfileImageUrl = new URL(user.profileImage);
-      const oldKey = oldProfileImageUrl.pathname.substring(1); // Get the key from the URL path, skipping the leading '/'
+      try {
+        const oldProfileImageUrl = new URL(user.profileImage);
+        const oldKey = oldProfileImageUrl.pathname.substring(1); // Get the key from the URL path, skipping the leading '/'
 
-      if (oldKey) {
-        const deleteParams = {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: oldKey,
-        };
+        if (oldKey) {
+          const deleteParams = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: oldKey,
+          };
 
-        await s3Client.send(new DeleteObjectCommand(deleteParams));
+          await s3Client.send(new DeleteObjectCommand(deleteParams));
+        }
+      } catch (error) {
+        console.warn('Error deleting old profile image from S3:', error.message);
       }
     }
 
