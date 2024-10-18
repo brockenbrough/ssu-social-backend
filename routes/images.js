@@ -3,6 +3,7 @@ const multer = require('multer');
 const express = require('express');
 const router = express.Router();
 const imageSchema = require('../models/imageModel');
+const User = require('../models/userModel'); // Import the user model
 
 // Configure AWS SDK with your credentials and region
 const s3Client = new S3Client({
@@ -52,13 +53,11 @@ router.post('/images/create', upload.single('image'), async (req, res) => {
       imageUri,
     });
   } catch (error) {
-    console.error('Error uploading image:', error);
     res.status(500).json({ message: 'Failed to upload image', error });
   }
 });
 
-const User = require('../models/userModel');  // Add the user model
-
+// Route to handle profile image upload and replace old image
 router.post('/profile/upload', upload.single('profileImage'), async (req, res) => {
   const file = req.file;
 
@@ -70,30 +69,49 @@ router.post('/profile/upload', upload.single('profileImage'), async (req, res) =
     return res.status(400).json({ message: 'Name is required' });
   }
 
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `profilepictures/${Date.now()}_${file.originalname}`,  // Store it in 'profilepictures/' folder
-    Body: file.buffer,
-    ContentType: file.mimetype,
-  };
-
   try {
-    const data = await s3Client.send(new PutObjectCommand(params));
-    const imageUri = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
-
-    // Update the user's profileImage field in the database
-    const user = await User.findOneAndUpdate({ username: req.body.name }, { profileImage: imageUri }, { new: true });
-
+    // Find the user by username
+    const user = await User.findOne({ username: req.body.name });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // If the user already has a profile image, delete the old image from S3
+    if (user.profileImage) {
+      const oldProfileImageUrl = new URL(user.profileImage);
+      const oldKey = oldProfileImageUrl.pathname.substring(1); // Get the key from the URL path, skipping the leading '/'
+
+      if (oldKey) {
+        const deleteParams = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: oldKey,
+        };
+
+        await s3Client.send(new DeleteObjectCommand(deleteParams));
+      }
+    }
+
+    // Upload the new profile image
+    const newKey = `profilepictures/${Date.now()}_${file.originalname}`;
+    const uploadParams = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: newKey,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
+
+    await s3Client.send(new PutObjectCommand(uploadParams));
+    const newImageUri = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${newKey}`;
+
+    // Update the user's profileImage field with the new image URI
+    user.profileImage = newImageUri;
+    await user.save();
+
     res.json({
       message: 'Profile image uploaded successfully',
-      imageUri,
+      imageUri: newImageUri,
     });
   } catch (error) {
-    console.error('Error uploading profile image:', error);
     res.status(500).json({ message: 'Failed to upload profile image', error });
   }
 });
@@ -111,7 +129,6 @@ router.delete('/images/:imageKey', async (req, res) => {
     await s3Client.send(new DeleteObjectCommand(deleteParams));
     res.json({ message: 'Image deleted successfully' });
   } catch (error) {
-    console.error('Error deleting image:', error);
     res.status(500).json({ message: 'Failed to delete image', error });
   }
 });
