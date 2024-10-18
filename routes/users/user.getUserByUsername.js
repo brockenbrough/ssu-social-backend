@@ -14,13 +14,14 @@ router.get("/user/getUserByUsername/:username", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const { _id, biography, profileImage } = user;
+
     // Return user data (excluding sensitive information like password)
-    const { _id, biography,imageId } = user;
     return res.json({
       _id,
       username,
       biography,
-      imageId,
+      profileImage,
     });
   } catch (error) {
     console.error("Error fetching user by username:", error.message);

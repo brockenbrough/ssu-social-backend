@@ -16,20 +16,25 @@ const newUserSchema = new mongoose.Schema(
     password: {
       required: true,
       type: String,
-      min : 8
+      min: 8
     },
     date: {
       type: Date,
       default: Date.now,
     },
-      imageId: {
-        type: String,
-        label: "imageId",
-        required: false,
-      },
+    imageId: {
+      type: String,
+      label: "imageId",
+      required: false,
+    },
+    profileImage: {
+      type: String,
+      label: "profileImage",
+      required: false,
+    },
     _id: {
       required: true,
-      type : mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       auto: true,
       label: '_id',
     }, 
@@ -38,8 +43,8 @@ const newUserSchema = new mongoose.Schema(
       type: String,
       default: ''
     }
-  }, 
+  },
   { collection: "users" }
 );
 
-module.exports = mongoose.model('users', newUserSchema)
+module.exports = mongoose.model('users', newUserSchema);

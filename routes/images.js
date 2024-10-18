@@ -16,7 +16,7 @@ const s3Client = new S3Client({
 // Set up multer to store the file in memory
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Route to handle image upload
+// Route to handle post image upload
 router.post('/images/create', upload.single('image'), async (req, res) => {
   const file = req.file;
 
@@ -36,26 +36,65 @@ router.post('/images/create', upload.single('image'), async (req, res) => {
   };
 
   try {
-    // Using v3's `PutObjectCommand` to upload the image
     const data = await s3Client.send(new PutObjectCommand(params));
 
     const imageUri = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
 
     const newImage = new imageSchema({
       name: req.body.name,
-      uri: imageUri,  // Ensure this is the S3 URL
+      uri: imageUri,
     });
 
     await newImage.save();
 
-    // Return the imageUri (S3 URL) in the response
     res.json({
       message: 'Image uploaded successfully',
-      imageUri,  // Return the S3 URL (imageUri)
+      imageUri,
     });
   } catch (error) {
     console.error('Error uploading image:', error);
     res.status(500).json({ message: 'Failed to upload image', error });
+  }
+});
+
+const User = require('../models/userModel');  // Add the user model
+
+router.post('/profile/upload', upload.single('profileImage'), async (req, res) => {
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).json({ message: 'No profile image file provided' });
+  }
+
+  if (!req.body.name) {
+    return res.status(400).json({ message: 'Name is required' });
+  }
+
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `profilepictures/${Date.now()}_${file.originalname}`,  // Store it in 'profilepictures/' folder
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+
+  try {
+    const data = await s3Client.send(new PutObjectCommand(params));
+    const imageUri = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
+
+    // Update the user's profileImage field in the database
+    const user = await User.findOneAndUpdate({ username: req.body.name }, { profileImage: imageUri }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      message: 'Profile image uploaded successfully',
+      imageUri,
+    });
+  } catch (error) {
+    console.error('Error uploading profile image:', error);
+    res.status(500).json({ message: 'Failed to upload profile image', error });
   }
 });
 
@@ -69,7 +108,6 @@ router.delete('/images/:imageKey', async (req, res) => {
   };
 
   try {
-    // Using v3's `DeleteObjectCommand` to delete the image
     await s3Client.send(new DeleteObjectCommand(deleteParams));
     res.json({ message: 'Image deleted successfully' });
   } catch (error) {
