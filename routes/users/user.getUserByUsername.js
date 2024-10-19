@@ -25,8 +25,6 @@ router.get("/user/getUserByUsername/:username", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log("User found:", user.profileImage);
-
     let profileImage = user.profileImage || defaultProfileImageUrl;
 
     // If the user has a profile image, check if it still exists in S3
