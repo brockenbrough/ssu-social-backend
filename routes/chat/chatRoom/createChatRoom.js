@@ -5,7 +5,7 @@ const verifyToken = require("../../../user-middleware/auth");
 const chatRoomModel = require("../../../models/chatRoomModel");
 const userModel = require("../../../models/userModel");
 
-router.post("/chatRoom/", async (req, res) => {
+router.post("/chatRoom/", verifyToken, async (req, res) => {
   const { participants } = req.body;
 
   if (
