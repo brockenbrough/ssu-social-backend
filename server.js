@@ -45,6 +45,7 @@ app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
 app.use(require("./routes/users/user.generateToken"));
 app.use(require("./routes/users/user.getProfileImage"));
+app.use(require("./routes/chat/chatRoom/createChatRoom"));
 
 // get driver connection
 const connectDB = require("./db/conn");

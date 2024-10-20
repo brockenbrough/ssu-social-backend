@@ -1,0 +1,132 @@
+### 1. Should pass: create chat room with valid participant user IDs
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "65debffb7e8758b2ded0ebef" },
+        { "userId": "66fdf4908d531515b5948122" }
+    ]
+}
+
+###
+
+### 2. Should fail: missing required field (participants)
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{}
+
+###
+
+### 3. Should fail: invalid participants array (not an array)
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": "not an array"
+}
+
+###
+
+### 4. Should fail: invalid number of participants (less than 2)
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "65debffb7e8758b2ded0ebef" }
+    ]
+}
+
+###
+
+### 5. Should fail: invalid number of participants (more than 2)
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "65debffb7e8758b2ded0ebef" },
+        { "userId": "66fdf4908d531515b5948122" },
+        { "userId": "67dcbcbb7e8758b2ded0ebec" }
+    ]
+}
+
+###
+
+### 6. Should fail: missing userId in participant 1
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "firstMessageId": null },
+        { "userId": "66fdf4908d531515b5948122" }
+    ]
+}
+
+###
+
+### 7. Should fail: missing userId in participant 2
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "65debffb7e8758b2ded0ebef" },
+        {}
+    ]
+}
+
+###
+
+### 8. Should fail: userId does not exist (participant 1)
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "00fdf0000d000000b0000000" },
+        { "userId": "66fdf4908d531515b5948122" }
+    ]
+}
+
+###
+
+### 9. Should fail: userId does not exist (participant 2)
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "65debffb7e8758b2ded0ebef" },
+        { "userId": "00fdf0000d000000b0000000" }
+    ]
+}
+
+###
+
+### 10. Should pass: return existing chat room for two existing participants
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "65debffb7e8758b2ded0ebef" },
+        { "userId": "66fdf4908d531515b5948122" }
+    ]
+}
+
+###
+
+### 11. Should pass: create chat room if it does not exist
+POST http://localhost:8095/chatRoom/
+Content-Type: application/json
+
+{
+    "participants": [
+        { "userId": "66f23a74271433d5696fadf7" },
+        { "userId": "66fdf4908d531515b5948122" }
+    ]
+}
