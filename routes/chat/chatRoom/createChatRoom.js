@@ -36,7 +36,10 @@ router.post("/chatRoom/", verifyToken, async (req, res) => {
   });
 
   if (chatRoom)
-    return res.json({ message: "Chat room already exists", chatRoom });
+    return res.json({
+      message: "Chat room already exists",
+      chatRoom: chatRoom,
+    });
 
   const newChatRoom = new chatRoomModel({
     participants: participants.map((participant) => ({
@@ -49,7 +52,7 @@ router.post("/chatRoom/", verifyToken, async (req, res) => {
     const response = await newChatRoom.save();
     res
       .status(201)
-      .json({ message: "Chat room created successfully", response });
+      .json({ message: "Chat room created successfully", chatRoom: response });
   } catch (err) {
     console.error("Error creating chat room:", err);
     res.status(500).json({ error: "Could not create chat room" });
