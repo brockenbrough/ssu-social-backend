@@ -5,7 +5,7 @@ const verifyToken = require("../../../user-middleware/auth");
 const chatRoomModel = require("../../../models/chatRoomModel");
 const userModel = require("../../../models/userModel");
 
-router.get("/chatRoom/getByUserId/:userId", async (req, res) => {
+router.get("/chatRoom/getByUserId/:userId", verifyToken, async (req, res) => {
   const { userId } = req.params;
 
   if (!userId) {
