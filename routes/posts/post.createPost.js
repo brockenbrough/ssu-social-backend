@@ -6,7 +6,6 @@ const verifyToken = require('../../user-middleware/auth')
 
 router.post("/posts/createPost", verifyToken, async (req, res) => {
   const { content, imageUri } = req.body;
-
   const { id, username } = req.user;
 
   const createNewPost = newPostModel({
@@ -15,7 +14,6 @@ router.post("/posts/createPost", verifyToken, async (req, res) => {
     content: content,
     imageUri: imageUri,  // Ensure imageUri is stored in the post object
   });
-
   try {
     const response = await newPostModel.create(createNewPost);
     res.json({ msg: 'Post created successfully' });
