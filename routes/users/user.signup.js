@@ -4,18 +4,25 @@ const z = require('zod')
 const bcrypt = require("bcrypt");
 const { newUserValidation } = require('../../models/userValidator')
 const newUserModel = require('../../models/userModel')
+const { body, validationResult } = require('express-validator');
 
 router.post('/user/signup', async (req, res) => {
     const { error } = newUserValidation(req.body);
     console.log(error)
-    if (error) return res.status(400).send({ message: `One of your signup fields is invalid: ` + error.errors[0].message });
+    if (error) return res.status(400).send({ message: error.errors[0].message });
 
-    const { username, email, password, biography } = req.body
+    const { username, email, password } = req.body
 
-    //check if email already exists
+    //check if username already exists
     const user = await newUserModel.findOne({ username: username })
     if (user)
-        return res.status(409).send({ message: "Username is taken, pick another" })
+        return res.status(409).send({ message: "Username is taken, make another one" })
+
+    // Check if the email already exists
+    const existingEmail = await newUserModel.findOne({ email: email });
+    if (existingEmail) {
+        return res.status(409).send({ errors: { message: "Email already exists, Make another one" } });
+    }
 
     //generates the hash
     const generateHash = await bcrypt.genSalt(Number(10))
@@ -28,7 +35,6 @@ router.post('/user/signup', async (req, res) => {
         username: username,
         email: email,
         password: hashPassword,
-        biography: biography,
     });
 
    
