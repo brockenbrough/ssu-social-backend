@@ -130,3 +130,37 @@ Content-Type: application/json
         { "userId": "66fdf4908d531515b5948122" }
     ]
 }
+
+### 12. Should fail: missing userId parameter
+GET http://localhost:8095/chatRoom/getByUserId/
+Content-Type: application/json
+
+###
+
+### 13. Should fail: non-existent userId
+GET http://localhost:8095/chatRoom/getByUserId/000000000000000000000000
+Content-Type: application/json
+
+###
+
+### 14. Should pass: existing userId, but no chat rooms found
+GET http://localhost:8095/chatRoom/getByUserId/65debffb7e8758b2ded0ebef
+Content-Type: application/json
+
+###
+
+### 15. Should pass: existing userId with chat rooms
+GET http://localhost:8095/chatRoom/getByUserId/66fdf4908d531515b5948122
+Content-Type: application/json
+
+###
+
+### 16. Should fail: invalid userId format
+GET http://localhost:8095/chatRoom/getByUserId/invalidUserIdFormat
+Content-Type: application/json
+
+###
+
+### 17. Should pass: fetch chat rooms with multiple participants
+GET http://localhost:8095/chatRoom/getByUserId/66fdf4908d531515b5948122
+Content-Type: application/json
