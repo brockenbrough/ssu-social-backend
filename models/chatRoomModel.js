@@ -19,6 +19,8 @@ const chatRoomSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 });
 
+chatRoomSchema.index({ "participants.userId": 1 });
+
 const ChatRoom = mongoose.model("ChatRoom", chatRoomSchema);
 module.exports = ChatRoom;
 

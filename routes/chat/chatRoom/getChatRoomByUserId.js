@@ -20,9 +20,11 @@ router.get("/chatRoom/getByUserId/:userId", verifyToken, async (req, res) => {
         .json({ message: `User with ID ${userId} not found.` });
     }
 
-    const chatRooms = await chatRoomModel.find({
-      "participants.userId": { $all: [userId] },
-    });
+    const chatRooms = await chatRoomModel
+      .find({
+        "participants.userId": { $all: [userId] },
+      })
+      .lean();
 
     if (!chatRooms)
       return res.json({ message: "No chat room found.", chatRooms: [] });

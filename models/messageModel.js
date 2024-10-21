@@ -24,5 +24,7 @@ const messageSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 });
 
+messageSchema.index({ senderId: 1, receiverId: 1 });
+
 const Message = mongoose.model("Message", messageSchema);
 module.exports = Message;
