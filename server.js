@@ -49,6 +49,7 @@ app.use(require("./routes/users/user.generateToken"));
 app.use(require("./routes/users/user.getProfileImage"));
 app.use(require("./routes/chat/chatRoom/createChatRoom"));
 app.use(require("./routes/chat/chatRoom/getChatRoomByUserId"));
+app.use(require("./routes/chat/message/createMessage"));
 app.use(require("./routes/chat/message/getMessageByChatRoomId"));
 
 // get driver connection

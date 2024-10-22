@@ -20,9 +20,66 @@ Content-Type: application/json
 GET http://localhost:8095/message/getByChatRoomId/6717d4db59a430970689a1c2  
 Content-Type: application/json  
 
-###  
-
 ### 5. Should fail: invalid chatRoomId format  
 GET http://localhost:8095/message/getByChatRoomId/invalidChatRoomIdFormat  
 Content-Type: application/json  
 
+### 6. Should pass: create a message with valid chatRoomId, senderId, receiverId, and text
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ 
+  "chatRoomId": "6717d4db59a430970689a1c2",
+  "senderId": "65debffb7e8758b2ded0ebef", 
+  "receiverId": "67083d66a09ca5fbc4f1fe6c", 
+  "text": "Hello, this is a test message.", 
+  "isRead": false 
+}
+
+### 7. Should fail: missing required fields (chatRoomId, senderId, receiverId, text)
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{}
+
+### 8. Should fail: missing text field
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c" }
+
+### 9. Should fail: empty text field
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "" }
+
+### 10. Should fail: chatRoomId does not exist
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "000000000000000000000000", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "Testing non-existent chat room." }
+
+### 11. Should fail: senderId does not exist
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "000000000000000000000000", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "Testing non-existent sender." }
+
+### 12. Should fail: receiverId does not exist
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "000000000000000000000000", "text": "Testing non-existent receiver." }
+
+### 13. Should pass: create a message with isRead set to true
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "This message is read.", "isRead": true }
+
+### 14. Should pass: create a message with isRead omitted (default behavior)
+POST http://localhost:8095/message/ 
+Content-Type: application/json
+
+{ "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "Message with isRead omitted." }
