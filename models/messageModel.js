@@ -34,23 +34,3 @@ messageSchema.index({ chatRoomId: 1, senderId: 1, receiverId: 1 });
 
 const Message = mongoose.model("Message", messageSchema);
 module.exports = Message;
-
-// Options for schema properties:
-// type
-// required
-// default
-// ref
-// unique
-// index
-// enum
-// min (Number)
-// max (Number)
-// minlength (String)
-// maxlength (String)
-// match (regex)
-// validate (function)
-// immutable
-// trim
-// uppercase
-// lowercase
-// auto (save date when saving a document)
