@@ -2,6 +2,7 @@
 const {
   moderateContent,
   censorContent,
+  preprocessText
 } = require("../utilities/openaiService");
 const customFlaggedWords = require("../utilities/customFlags"); // Ensure these words are policy-compliant
 
@@ -13,10 +14,13 @@ const moderationMiddleware = async (req, res, next) => {
       return next();
     }
 
-    // Perform content moderation using OpenAI Moderation API
-    const moderationResult = await moderateContent(content);
+    // Preprocess the text
+    const preProcessedText = preprocessText(content);
 
-    const flaggedCategories = moderationResult.categories;
+    // Perform content moderation using OpenAI Moderation API
+    const moderationResult = await moderateContent(preProcessedText);
+
+    
     const severeCategories = [
       "hate",
       "hate/threatening",
@@ -41,7 +45,7 @@ const moderationMiddleware = async (req, res, next) => {
     }
 
     // Censor the content using OpenAI Chat Completion API
-    const censoredContent = await censorContent(content, customFlaggedWords);
+    const censoredContent = await censorContent(preProcessedText, customFlaggedWords);
 
     // Update the content in the request body with the censored text
     req.body.content = censoredContent;
