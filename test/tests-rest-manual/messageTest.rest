@@ -1,0 +1,28 @@
+### 1. Should fail: missing chatRoomId parameter  
+GET http://localhost:8095/message/getByChatRoomId/  
+Content-Type: application/json  
+
+###  
+
+### 2. Should fail: chatRoomId does not exist  
+GET http://localhost:8095/message/getByChatRoomId/000000000000000000000000  
+Content-Type: application/json  
+
+###  
+
+### 3. Should pass: valid chatRoomId with no messages found  
+GET http://localhost:8095/message/getByChatRoomId/6717d4db59a430970689a1c2 
+Content-Type: application/json  
+
+###  
+
+### 4. Should pass: valid chatRoomId with messages found  
+GET http://localhost:8095/message/getByChatRoomId/6717d4db59a430970689a1c2  
+Content-Type: application/json  
+
+###  
+
+### 5. Should fail: invalid chatRoomId format  
+GET http://localhost:8095/message/getByChatRoomId/invalidChatRoomIdFormat  
+Content-Type: application/json  
+
