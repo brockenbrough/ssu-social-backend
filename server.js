@@ -36,7 +36,7 @@ app.use(require("./routes/users/user.login"));
 app.use(require("./routes/users/user.getAllUsers"));
 app.use(require("./routes/users/user.signup"));
 app.use(require("./routes/users/user.getuserById"));
-app.use(require("./routes/users/user.getUsersById"));
+app.use(require("./routes/users/user.getUsersByIds"));
 app.use(require("./routes/users/user.search"));
 app.use(require("./routes/users/user.editUser"));
 app.use(require("./routes/users/user.deleteall"));
