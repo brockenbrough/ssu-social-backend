@@ -8,7 +8,7 @@ const port = process.env.PORT || 8095;
 const swaggerUi = require("swagger-ui-express");
 const yaml = require("yamljs");
 
-// Set up swaager
+// Set up swagger
 const swaggerDefinition = yaml.load("./docs/swagger.yaml");
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
@@ -37,6 +37,7 @@ app.use(require("./routes/users/user.login"));
 app.use(require("./routes/users/user.getAllUsers"));
 app.use(require("./routes/users/user.signup"));
 app.use(require("./routes/users/user.getuserById"));
+app.use(require("./routes/users/user.getUsersByIds"));
 app.use(require("./routes/users/user.search"));
 app.use(require("./routes/users/user.editUser"));
 app.use(require("./routes/users/user.deleteall"));
@@ -44,8 +45,10 @@ app.use(require("./routes/users/user.refresh-token"));
 app.use(require("./routes/users/user.getUserByUsername"));
 app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
-
 app.use(require("./routes/users/user.generateToken"));
+app.use(require("./routes/users/user.getProfileImage"));
+app.use(require("./routes/chat/chatRoom/createChatRoom"));
+app.use(require("./routes/chat/chatRoom/getChatRoomByUserId"));
 
 // get driver connection
 const connectDB = require("./db/conn");

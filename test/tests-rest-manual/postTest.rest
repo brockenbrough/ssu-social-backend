@@ -107,4 +107,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmYwNGE1N
   "content": "This update should fail due to unauthorized user."
 }
 
+// Attempt to create a Post with a custom flagged word "carrot" (should censor)
+###
+POST http://localhost:8095/posts/createPost
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTJiMGE3NDNkOTllZTIxNGRlY2I1NiIsImVtYWlsIjoicGFzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidGVzdHRlc3QiLCJpYXQiOjE3Mjk2MTUyNTEsImV4cCI6MTcyOTYxODg1MX0.wOMft5s-Nm4lBk73RrPjCxxabCySInrkmsvGIrEgWzg
+
+{
+  "content": "I love broccoli!",
+  "imageUri": "60d21b4667d0d8992e610c85"
+}
+
 ###
