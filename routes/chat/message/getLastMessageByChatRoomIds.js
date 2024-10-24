@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../../../user-middleware/auth");
 const chatRoomModel = require("../../../models/chatRoomModel");
 const messageModel = require("../../../models/messageModel");
 
-router.get("/message/lastMessage", async (req, res) => {
+router.get("/message/lastMessage", verifyToken, async (req, res) => {
   const { chatRoomIds } = req.body;
 
   if (!Array.isArray(chatRoomIds)) {
