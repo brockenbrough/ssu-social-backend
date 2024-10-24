@@ -41,6 +41,7 @@
     "openai": "^3.2.1",
     "path": "^0.12.7",
     "shortid": "^2.2.16",
+    "socket.io": "^4.8.0",
     "swagger-ui-express": "^5.0.0",
     "yamljs": "^0.3.0",
     "zod": "^3.19.1"

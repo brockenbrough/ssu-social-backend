@@ -1,4 +1,6 @@
 const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
 const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./.env" });
@@ -14,6 +16,8 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
 app.use(cors());
 app.use(express.json());
+
+// Import routes
 app.use(require("./routes/project_notes"));
 app.use(require("./routes/comments"));
 app.use(require("./routes/feed"));
@@ -51,18 +55,37 @@ app.use(require("./routes/chat/chatRoom/createChatRoom"));
 app.use(require("./routes/chat/chatRoom/getChatRoomByUserId"));
 app.use(require("./routes/chat/message/createMessage"));
 app.use(require("./routes/chat/message/getMessageByChatRoomId"));
+app.use(require("./routes/chat/message/getUnreadMessageByUserId"));
+app.use(require("./routes/chat/message/updateMessageMarkAsRead"));
 
 // get driver connection
 const connectDB = require("./db/conn");
 
-// Production environment: connect to the database and start listening for requests
+// Create an HTTP server and integrate Socket.IO
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`New client connected: ${socket.id}`);
+  console.log(`Total clients connected: ${io.engine.clientsCount}`);
+  socket.on("message", (data) => {
+    io.emit("message", data);
+  });
+
+  socket.on("disconnect", () => {});
+});
 if (process.env.NODE_ENV !== "test") {
   connectDB();
-  app.listen(port, () => {
+  server.listen(port, () => {
     setTimeout(() => {
       console.log(`Your backend is running on port ${port}`);
-    }, 1000); // Add a 1-second delay
+    }, 1000);
   });
 }
 
-module.exports = app; // Export the app instance for unit testing via supertest.
+module.exports = { app, server };

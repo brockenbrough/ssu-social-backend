@@ -25,6 +25,13 @@ const newUserSchema = new mongoose.Schema(
       default: Date.now,
     },
 
+    role: {
+      type: String,
+      label: "role",
+      required: true,
+      default: user,
+    },
+
     imageId: {
       type: String,
       label: "imageId",
