@@ -106,3 +106,80 @@ Content-Type: application/json
 GET http://localhost:8095/message/unreadMessage/getByUserId/12345
 Content-Type: application/json
 
+###
+
+### 1. Should pass: Mark messages as read with valid message IDs
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["6717f8f012ee40f5f913a53f", "6718020e83997729f86cae7c"]
+}
+
+###
+
+### 2. Should fail: Mark messages as read with invalid message IDs
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["invalidId1", "invalidId2"]
+}
+
+###
+
+### 3. Should pass: No message IDs provided (empty array)
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": []
+}
+
+###
+
+### 4. Should fail: Invalid request body (messageIds is not an array)
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": "65debffb7e8758b2ded0ebef"
+}
+
+###
+
+### 5. Should fail: Missing messageIds in the request body
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{}
+
+###
+
+### 6. Should fail: Message IDs not found in the database
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["67086973bb79fdd55952cccc", "67086973bb79fdd55952cccb"]
+}
+
+###
+
+### 7. Should pass: Mark messages as read with mixed valid and invalid message IDs
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["6717f8f012ee40f5f913a53f", "00000000000000f5f9000000"]
+}
+
+###
+
+### 8. Should pass: Mark messages as read with a single valid message ID
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["6717f8f012ee40f5f913a53f"]
+}

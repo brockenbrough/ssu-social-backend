@@ -56,6 +56,7 @@ app.use(require("./routes/chat/chatRoom/getChatRoomByUserId"));
 app.use(require("./routes/chat/message/createMessage"));
 app.use(require("./routes/chat/message/getMessageByChatRoomId"));
 app.use(require("./routes/chat/message/getUnreadMessageByUserId"));
+app.use(require("./routes/chat/message/updateMessageMarkAsRead"));
 
 // get driver connection
 const connectDB = require("./db/conn");
