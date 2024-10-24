@@ -108,7 +108,7 @@ Content-Type: application/json
 
 ###
 
-### 1. Should pass: Mark messages as read with valid message IDs
+### 19. Should pass: Mark messages as read with valid message IDs
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -118,7 +118,7 @@ Content-Type: application/json
 
 ###
 
-### 2. Should fail: Mark messages as read with invalid message IDs
+### 20. Should fail: Mark messages as read with invalid message IDs
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -128,7 +128,7 @@ Content-Type: application/json
 
 ###
 
-### 3. Should pass: No message IDs provided (empty array)
+### 21. Should pass: No message IDs provided (empty array)
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -138,7 +138,7 @@ Content-Type: application/json
 
 ###
 
-### 4. Should fail: Invalid request body (messageIds is not an array)
+### 22. Should fail: Invalid request body (messageIds is not an array)
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -148,7 +148,7 @@ Content-Type: application/json
 
 ###
 
-### 5. Should fail: Missing messageIds in the request body
+### 23. Should fail: Missing messageIds in the request body
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -156,7 +156,7 @@ Content-Type: application/json
 
 ###
 
-### 6. Should fail: Message IDs not found in the database
+### 24. Should fail: Message IDs not found in the database
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -166,7 +166,7 @@ Content-Type: application/json
 
 ###
 
-### 7. Should pass: Mark messages as read with mixed valid and invalid message IDs
+### 25. Should pass: Mark messages as read with mixed valid and invalid message IDs
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
@@ -176,10 +176,70 @@ Content-Type: application/json
 
 ###
 
-### 8. Should pass: Mark messages as read with a single valid message ID
+### 26. Should pass: Mark messages as read with a single valid message ID
 PUT http://localhost:8095/message/markAsRead
 Content-Type: application/json
 
 {
     "messageIds": ["6717f8f012ee40f5f913a53f"]
 }
+
+###
+
+### 1. Should fail: missing chatRoomIds in request body
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{}
+
+###
+
+### 2. Should fail: chatRoomIds is not an array
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": "65debffb7e8758b2ded0ebef"
+}
+
+###
+
+### 3. Should pass: empty chatRoomIds array, should return empty data array
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": []
+}
+
+###
+
+### 4. Should fail: non-existing chatRoomIds, should return 404
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": ["000000000000000000000000", "111111111111111111111111"]
+}
+
+###
+
+### 5. Should pass: valid chatRoomIds with existing chat rooms
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": ["6717d4db59a430970689a1c2", "6717d5c059a430970689a38a"]
+}
+
+###
+
+### 6. Should pass: valid chatRoomIds with mixed valid and invalid chat rooms
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": ["6717d4db59a430970689a1c2", "000000000000000000000000"]
+}
+
+###
