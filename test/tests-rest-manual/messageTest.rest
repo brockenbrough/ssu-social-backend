@@ -83,3 +83,26 @@ POST http://localhost:8095/message/
 Content-Type: application/json
 
 { "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "Message with isRead omitted." }
+
+### 15. Should pass: Fetch unread messages with a valid userId
+GET http://localhost:8095/message/unreadMessage/getByUserId/65debffb7e8758b2ded0ebef
+Content-Type: application/json
+
+###
+
+### 16. Should fail: Fetch unread messages with an invalid userId (not found)
+GET http://localhost:8095/message/unreadMessage/getByUserId/invalidUserId
+Content-Type: application/json
+
+###
+
+### 17. Should fail: Missing userId in the request
+GET http://localhost:8095/message/unreadMessage/getByUserId/
+Content-Type: application/json
+
+###
+
+### 18. Should fail: Invalid userId format (malformed ID)
+GET http://localhost:8095/message/unreadMessage/getByUserId/12345
+Content-Type: application/json
+
