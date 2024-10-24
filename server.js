@@ -70,6 +70,8 @@ const io = socketIo(server, {
 });
 
 io.on("connection", (socket) => {
+  console.log(`New client connected: ${socket.id}`);
+  console.log(`Total clients connected: ${io.engine.clientsCount}`);
   socket.on("message", (data) => {
     io.emit("message", data);
   });
