@@ -4,7 +4,7 @@ const verifyToken = require("../../../user-middleware/auth");
 const chatRoomModel = require("../../../models/chatRoomModel");
 const messageModel = require("../../../models/messageModel");
 
-router.get("/message/lastMessage", verifyToken, async (req, res) => {
+router.post("/message/lastMessage", verifyToken, async (req, res) => {
   const { chatRoomIds } = req.body;
 
   if (!Array.isArray(chatRoomIds)) {
@@ -30,10 +30,8 @@ router.get("/message/lastMessage", verifyToken, async (req, res) => {
           .sort({ date: -1 })
           .lean();
 
-        return {
-          chatRoomId,
-          text: lastMessage ? lastMessage.text : null,
-        };
+        if (lastMessage) return lastMessage;
+        else return { chatRoomId };
       })
     );
 
