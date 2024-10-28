@@ -6,6 +6,67 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+// Obfuscation map defined globally
+const obfuscationMap = {
+  '4': 'a',
+  '@': 'a',
+  '3': 'e',
+  '€': 'e',
+  '1': 'i',
+  '!': 'i',
+  '|': 'i',
+  '0': 'o',
+  '5': 's',
+  '$': 's',
+  '7': 't',
+  '+': 't',
+  '(': 'c',
+  ')': 'c',
+  '[': 'c',
+  '{': 'c',
+  '<': 'c',
+  '®': 'r',
+  '©': 'c',
+  // Add more substitutions as needed
+};
+
+// Function to escape regex special characters
+const escapeRegExp = (string) => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+// Generate a character class for obfuscated characters
+const obfuscationChars = Object.keys(obfuscationMap)
+  .map((char) => escapeRegExp(char))
+  .join('');
+
+// Function to reconstruct words where every character is separated by spaces
+const reconstructSpacedWords = (text) => {
+  const charClass = `[a-zA-Z${obfuscationChars}]`;
+  // Match words where every character is separated by spaces, with at least 3 characters
+  const regex = new RegExp(`\\b(${charClass})(?:\\s+${charClass}){2,}\\b`, 'gi');
+  return text.replace(regex, (match) => {
+    // Ensure we're only matching letters, obfuscated chars, and spaces
+    if (/^([a-zA-Z${obfuscationChars}]\\s+)+[a-zA-Z${obfuscationChars}]$/.test(match)) {
+      return match.replace(/\s+/g, '');
+    }
+    return match;
+  });
+};
+
+// Function to replace obfuscated characters within words containing letters
+const replaceObfuscatedCharacters = (text) => {
+  const escapedKeys = Object.keys(obfuscationMap).map((key) => escapeRegExp(key));
+  const characterClass = `[${escapedKeys.join('')}]`;
+
+  // Only process words that contain at least one letter
+  return text.replace(/\b\w*[a-zA-Z]\w*\b/g, (word) => {
+    return word.replace(new RegExp(characterClass, 'gi'), (char) => {
+      return obfuscationMap[char.toLowerCase()] || char;
+    });
+  });
+};
+
 // Function to check for offensive content
 const moderateContent = async (text) => {
   try {
@@ -34,7 +95,29 @@ const censorContent = async (text, customFlaggedWords) => {
     const prompt = [
       {
         role: "system",
-        content: `You are an assistant that censors disallowed content from user input. If the text contains any disallowed content or any of the following words: [${customWordsList}], replace them with asterisks (*). This includes words that are intentionally misspelled or obfuscated with spaces, numbers, or special characters. Do not change acceptable content.`,
+        content: `You are a content moderation assistant. Your task is to review user input text and censor any disallowed content, including profanity, inappropriate language, and ${customWordsList}, regardless of obfuscation techniques such as added spaces between letters, substitution with numbers or special characters, or any other methods to bypass filters. For each detected disallowed word, replace every character of that word with asterisks (*), but preserve the original punctuation and spacing of acceptable content. Do not alter any acceptable content.
+
+Examples where "[badword]" represents a disallowed word:
+
+Input: "This is [badword] in a sentence."
+
+Output: "This is ******* in a sentence."
+
+Input: "[b a d w o r d] with spaces."
+
+Output: "******* with spaces."
+
+Input: "Normal acceptable text."
+
+Output: "Normal acceptable text."
+
+Input: "With spaces and special characters [b @ dw 0 r d]!"
+
+Output: "With spaces and special characters *******!"
+
+Input: "N0rm@l @((3ptable text."
+
+Output: "N0rm@l @((3ptable text."`,
       },
       {
         role: "user",
@@ -55,51 +138,6 @@ const censorContent = async (text, customFlaggedWords) => {
     console.error("Error with OpenAI censoring:", error);
     throw new Error("OpenAI censoring error");
   }
-};
-
-// Function to escape regex special characters
-const escapeRegExp = (string) => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-};
-
-// Function to reconstruct words with spaces between letters
-const reconstructSpacedWords = (text) => {
-  return text.replace(/\b(?:[a-zA-Z]\s+){1,}[a-zA-Z]\b/g, (match) => {
-    return match.replace(/\s+/g, '');
-  });
-};
-
-// Function to replace common obfuscated characters
-const replaceObfuscatedCharacters = (text) => {
-  const obfuscationMap = {
-    '4': 'a',
-    '@': 'a',
-    '3': 'e',
-    '€': 'e',
-    '1': 'i',
-    '!': 'i',
-    '|': 'i',
-    '0': 'o',
-    '5': 's',
-    '$': 's',
-    '7': 't',
-    '+': 't',
-    '(': 'c',
-    ')': 'c',
-    '[': 'c',
-    '{': 'c',
-    '<': 'c',
-    '®': 'r',
-    '©': 'c',
-    // Add more substitutions as needed
-  };
-
-  // Escape the keys to handle special regex characters
-  const escapedKeys = Object.keys(obfuscationMap).map((key) => escapeRegExp(key));
-
-  const regex = new RegExp(escapedKeys.join('|'), 'gi');
-
-  return text.replace(regex, (char) => obfuscationMap[char.toLowerCase()] || char);
 };
 
 // Function to preprocess text

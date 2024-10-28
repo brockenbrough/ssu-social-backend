@@ -54,6 +54,8 @@ const moderationMiddleware = async (req, res, next) => {
     req.moderation = moderationResult;
     req.censored = content !== censoredContent;
 
+    req.hasOffensiveText = req.censored;
+
     next();
   } catch (error) {
     console.error("Error in moderation middleware:", error);
