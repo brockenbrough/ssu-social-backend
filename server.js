@@ -49,6 +49,11 @@ app.use(require("./routes/users/user.refresh-token"));
 app.use(require("./routes/users/user.getUserByUsername"));
 app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
+<<<<<<< Updated upstream
+=======
+app.use(require("./routes/views"))
+
+>>>>>>> Stashed changes
 app.use(require("./routes/users/user.generateToken"));
 app.use(require("./routes/users/user.getProfileImage"));
 app.use(require("./routes/chat/chatRoom/createChatRoom"));
