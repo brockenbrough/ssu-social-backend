@@ -49,11 +49,6 @@ app.use(require("./routes/users/user.refresh-token"));
 app.use(require("./routes/users/user.getUserByUsername"));
 app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
-<<<<<<< Updated upstream
-=======
-app.use(require("./routes/views"))
-
->>>>>>> Stashed changes
 app.use(require("./routes/users/user.generateToken"));
 app.use(require("./routes/users/user.getProfileImage"));
 app.use(require("./routes/chat/chatRoom/createChatRoom"));
@@ -64,6 +59,7 @@ app.use(require("./routes/chat/message/getLastMessageByChatRoomIds"));
 app.use(require("./routes/chat/message/getMessageByUserId"));
 app.use(require("./routes/chat/message/getUnreadMessageByUserId"));
 app.use(require("./routes/chat/message/updateMessageMarkAsRead"));
+app.use(require("./routes/views"))
 
 // get driver connection
 const connectDB = require("./db/conn");
