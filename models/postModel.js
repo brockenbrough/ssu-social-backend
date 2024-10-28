@@ -9,6 +9,7 @@ const newPostSchema = new mongoose.Schema(
     imageUri: { type: String, label: "imageUri", required: false },  // Ensure this field exists
     date: { type: Date, default: Date.now },
     imageFlag: { type: Boolean, default: false }, // New field
+    hasOffensiveText: {type: Boolean, default: false },
   },
   { collection: "posts" }
 );

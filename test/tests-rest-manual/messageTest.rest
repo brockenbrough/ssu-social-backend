@@ -83,3 +83,187 @@ POST http://localhost:8095/message/
 Content-Type: application/json
 
 { "chatRoomId": "6717d4db59a430970689a1c2", "senderId": "65debffb7e8758b2ded0ebef", "receiverId": "67083d66a09ca5fbc4f1fe6c", "text": "Message with isRead omitted." }
+
+### 15. Should pass: Fetch unread messages with a valid userId
+GET http://localhost:8095/message/unreadMessage/getByUserId/65debffb7e8758b2ded0ebef
+Content-Type: application/json
+
+###
+
+### 16. Should fail: Fetch unread messages with an invalid userId (not found)
+GET http://localhost:8095/message/unreadMessage/getByUserId/invalidUserId
+Content-Type: application/json
+
+###
+
+### 17. Should fail: Missing userId in the request
+GET http://localhost:8095/message/unreadMessage/getByUserId/
+Content-Type: application/json
+
+###
+
+### 18. Should fail: Invalid userId format (malformed ID)
+GET http://localhost:8095/message/unreadMessage/getByUserId/12345
+Content-Type: application/json
+
+###
+
+### 19. Should pass: Mark messages as read with valid message IDs
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["6717f8f012ee40f5f913a53f", "6718020e83997729f86cae7c"]
+}
+
+###
+
+### 20. Should fail: Mark messages as read with invalid message IDs
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["invalidId1", "invalidId2"]
+}
+
+###
+
+### 21. Should pass: No message IDs provided (empty array)
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": []
+}
+
+###
+
+### 22. Should fail: Invalid request body (messageIds is not an array)
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": "65debffb7e8758b2ded0ebef"
+}
+
+###
+
+### 23. Should fail: Missing messageIds in the request body
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{}
+
+###
+
+### 24. Should fail: Message IDs not found in the database
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["67086973bb79fdd55952cccc", "67086973bb79fdd55952cccb"]
+}
+
+###
+
+### 25. Should pass: Mark messages as read with mixed valid and invalid message IDs
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["6717f8f012ee40f5f913a53f", "00000000000000f5f9000000"]
+}
+
+###
+
+### 26. Should pass: Mark messages as read with a single valid message ID
+PUT http://localhost:8095/message/markAsRead
+Content-Type: application/json
+
+{
+    "messageIds": ["6717f8f012ee40f5f913a53f"]
+}
+
+###
+
+### 27. Should fail: missing chatRoomIds in request body
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{}
+
+###
+
+### 28. Should fail: chatRoomIds is not an array
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": "65debffb7e8758b2ded0ebef"
+}
+
+###
+
+### 29. Should pass: empty chatRoomIds array, should return empty data array
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": []
+}
+
+###
+
+### 30. Should fail: non-existing chatRoomIds, should return 404
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": ["000000000000000000000000", "111111111111111111111111"]
+}
+
+###
+
+### 31. Should pass: valid chatRoomIds with existing chat rooms
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": ["6717d4db59a430970689a1c2", "6717d5c059a430970689a38a"]
+}
+
+###
+
+### 32. Should pass: valid chatRoomIds with mixed valid and invalid chat rooms
+GET http://localhost:8095/message/lastMessage
+Content-Type: application/json
+
+{
+    "chatRoomIds": ["6717d4db59a430970689a1c2", "000000000000000000000000"]
+}
+
+###
+
+### 33. Should pass: Get messages for valid user ID
+GET http://localhost:8095/message/getByUserId/65debffb7e8758b2ded0ebef
+Content-Type: application/json
+
+###
+
+### 34. Should fail: Get messages for nonexistent user ID
+GET http://localhost:8095/message/getByUserId/000000000000000000000000
+Content-Type: application/json
+
+###
+
+### 35. Should fail: Get messages without user ID
+GET http://localhost:8095/message/getByUserId/
+Content-Type: application/json
+
+###
+
+### 36. Should fail: Invalid request method (POST instead of GET)
+POST http://localhost:8095/message/getByUserId/65debffb7e8758b2ded0ebef
+Content-Type: application/json
+
+###

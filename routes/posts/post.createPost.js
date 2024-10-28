@@ -12,12 +12,14 @@ router.post('/posts/createPost', verifyToken, moderationMiddleware, async (req, 
   try {
     // Access the censorship flag
     const contentWasCensored = req.censored;
+    const hasOffensiveText = req.hasOffensiveText;
     // Create the post with the censored content
     const createNewPost = newPostModel({
       userId: mongoose.Types.ObjectId(id),
       username: username,
       content: content,
       imageUri: imageUri,
+      hasOffensiveText: hasOffensiveText,
     });
     // Save the post
     await newPostModel.create(createNewPost);

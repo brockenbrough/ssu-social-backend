@@ -55,6 +55,11 @@ app.use(require("./routes/chat/chatRoom/createChatRoom"));
 app.use(require("./routes/chat/chatRoom/getChatRoomByUserId"));
 app.use(require("./routes/chat/message/createMessage"));
 app.use(require("./routes/chat/message/getMessageByChatRoomId"));
+app.use(require("./routes/chat/message/getLastMessageByChatRoomIds"));
+app.use(require("./routes/chat/message/getMessageByUserId"));
+app.use(require("./routes/chat/message/getUnreadMessageByUserId"));
+app.use(require("./routes/chat/message/updateMessageMarkAsRead"));
+app.use(require("./routes/views"))
 
 // get driver connection
 const connectDB = require("./db/conn");
@@ -69,6 +74,8 @@ const io = socketIo(server, {
 });
 
 io.on("connection", (socket) => {
+  console.log(`New client connected: ${socket.id}`);
+  console.log(`Total clients connected: ${io.engine.clientsCount}`);
   socket.on("message", (data) => {
     io.emit("message", data);
   });

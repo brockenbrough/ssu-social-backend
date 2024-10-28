@@ -16,8 +16,12 @@ router.post("/user/getUsersByIds", async (req, res) => {
   const defaultProfileImageUrl =
     "https://ssusocial.s3.amazonaws.com/profilepictures/ProfileIcon.png";
 
-  if (!Array.isArray(userIds) || userIds.length === 0) {
+  if (!Array.isArray(userIds)) {
     return res.status(400).json({ message: "User IDs are required." });
+  }
+
+  if (userIds.length === 0) {
+    return res.json({});
   }
 
   try {
