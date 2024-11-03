@@ -3,24 +3,23 @@ const router = express.Router();
 const verifyToken = require('../../user-middleware/auth');
 const newPostModel = require('../../models/postModel');
 
-// Route to update the post's imageFlag field
 router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
   const { postId } = req.params;
-  const { content } = req.body;
+  const { imageFlag } = req.body;
+
+  // Check if imageFlag is present in the request body
+  if (typeof imageFlag === 'undefined') {
+    return res.status(400).json({ error: "imageFlag is required in the request body" });
+  }
 
   try {
-    // Find the post by ID
     const post = await newPostModel.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    // Ensure the post belongs to the user
-    // if (post.userId.toString() !== id) {
-    //   return res.status(403).json({ error: "Not authorized to update this post" });
-    // }
-
-    post.content = content;
+    // Update the imageFlag field
+    post.imageFlag = imageFlag;
     await post.save();
 
     res.status(200).json({ msg: "Post flag updated successfully", post });
