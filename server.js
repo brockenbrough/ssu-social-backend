@@ -29,7 +29,7 @@ app.use(require("./routes/posts/post.getPostPage"));
 app.use(require("./routes/posts/post.getPostPageByUsername"));
 app.use(require("./routes/posts/post.getPostById"));
 app.use(require("./routes/posts/post.updatePost"));
-app.use(require("./routes/posts/post.search"));
+
 app.use(require("./routes/notifications/createNotification"));
 app.use(require("./routes/notifications/getNotificationByUsername"));
 app.use(require("./routes/notifications/updateNotification"));
@@ -47,6 +47,7 @@ app.use(require("./routes/users/user.editUser"));
 app.use(require("./routes/users/user.deleteall"));
 app.use(require("./routes/users/user.refresh-token"));
 app.use(require("./routes/users/user.getUserByUsername"));
+app.use(require("./routes/users/user.updateBioByID"))
 app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
 app.use(require("./routes/users/user.generateToken"));
@@ -59,7 +60,6 @@ app.use(require("./routes/chat/message/getLastMessageByChatRoomIds"));
 app.use(require("./routes/chat/message/getMessageByUserId"));
 app.use(require("./routes/chat/message/getUnreadMessageByUserId"));
 app.use(require("./routes/chat/message/updateMessageMarkAsRead"));
-app.use(require("./routes/views"))
 
 // get driver connection
 const connectDB = require("./db/conn");
