@@ -12,7 +12,7 @@ router.get("/post/search/:searchInput", async (req, res) => {
   try {
     const posts = await newPostModel.find({
       content: { $regex: searchInput, $options: "i" } // 'i' for case-insensitive
-    });
+    }).sort({date: -1});
 
     return res.json(posts);
   } catch (error) {
