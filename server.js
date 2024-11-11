@@ -48,7 +48,7 @@ app.use(require("./routes/users/user.editUser"));
 app.use(require("./routes/users/user.deleteall"));
 app.use(require("./routes/users/user.refresh-token"));
 app.use(require("./routes/users/user.getUserByUsername"));
-app.use(require("./routes/users/user.updateBioByID"))
+app.use(require("./routes/users/user.updateBioByID"));
 app.use(require("./routes/statistics"));
 app.use(require("./routes/users/user.deleteById"));
 app.use(require("./routes/users/user.generateToken"));
@@ -82,12 +82,16 @@ io.on("connection", (socket) => {
     io.emit("message", data);
   });
 
+  socket.on("messageRead", (data) => {
+    io.emit("messageRead", data);
+  });
+
   socket.on("comment", (data) => {
-    io.emit("comment", data); 
+    io.emit("comment", data);
   });
 
   socket.on("deleteComment", (data) => {
-    io.emit("deleteComment", data); 
+    io.emit("deleteComment", data);
   });
 
   socket.on("disconnect", () => {});
