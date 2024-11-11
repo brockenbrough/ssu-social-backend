@@ -8,47 +8,54 @@ const openai = new OpenAIApi(configuration);
 
 // Obfuscation map defined globally
 const obfuscationMap = {
-  '4': 'a',
-  '@': 'a',
-  '3': 'e',
-  '€': 'e',
-  '1': 'i',
-  '!': 'i',
-  '|': 'i',
-  '0': 'o',
-  '5': 's',
-  '$': 's',
-  '7': 't',
-  '+': 't',
-  '(': 'c',
-  ')': 'c',
-  '[': 'c',
-  '{': 'c',
-  '<': 'c',
-  '®': 'r',
-  '©': 'c',
+  4: "a",
+  "@": "a",
+  3: "e",
+  "€": "e",
+  1: "i",
+  "!": "i",
+  "|": "i",
+  0: "o",
+  5: "s",
+  $: "s",
+  7: "t",
+  "+": "t",
+  "(": "c",
+  ")": "c",
+  "[": "c",
+  "{": "c",
+  "<": "c",
+  "®": "r",
+  "©": "c",
   // Add more substitutions as needed
 };
 
 // Function to escape regex special characters
 const escapeRegExp = (string) => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 };
 
 // Generate a character class for obfuscated characters
 const obfuscationChars = Object.keys(obfuscationMap)
   .map((char) => escapeRegExp(char))
-  .join('');
+  .join("");
 
 // Function to reconstruct words where every character is separated by spaces
 const reconstructSpacedWords = (text) => {
   const charClass = `[a-zA-Z${obfuscationChars}]`;
   // Match words where every character is separated by spaces, with at least 3 characters
-  const regex = new RegExp(`\\b(${charClass})(?:\\s+${charClass}){2,}\\b`, 'gi');
+  const regex = new RegExp(
+    `\\b(${charClass})(?:\\s+${charClass}){2,}\\b`,
+    "gi"
+  );
   return text.replace(regex, (match) => {
     // Ensure we're only matching letters, obfuscated chars, and spaces
-    if (/^([a-zA-Z${obfuscationChars}]\\s+)+[a-zA-Z${obfuscationChars}]$/.test(match)) {
-      return match.replace(/\s+/g, '');
+    if (
+      /^([a-zA-Z${obfuscationChars}]\\s+)+[a-zA-Z${obfuscationChars}]$/.test(
+        match
+      )
+    ) {
+      return match.replace(/\s+/g, "");
     }
     return match;
   });
@@ -56,12 +63,14 @@ const reconstructSpacedWords = (text) => {
 
 // Function to replace obfuscated characters within words containing letters
 const replaceObfuscatedCharacters = (text) => {
-  const escapedKeys = Object.keys(obfuscationMap).map((key) => escapeRegExp(key));
-  const characterClass = `[${escapedKeys.join('')}]`;
+  const escapedKeys = Object.keys(obfuscationMap).map((key) =>
+    escapeRegExp(key)
+  );
+  const characterClass = `[${escapedKeys.join("")}]`;
 
   // Only process words that contain at least one letter
   return text.replace(/\b\w*[a-zA-Z]\w*\b/g, (word) => {
-    return word.replace(new RegExp(characterClass, 'gi'), (char) => {
+    return word.replace(new RegExp(characterClass, "gi"), (char) => {
       return obfuscationMap[char.toLowerCase()] || char;
     });
   });
@@ -148,8 +157,37 @@ const preprocessText = (text) => {
   return normalizedText;
 };
 
+const generateMessage = async (chatHistoryStr) => {
+  try {
+    const prompt = [
+      {
+        role: "system",
+        content: `Generate a unique, very short response based on the provided chat history, as if you are the user responding naturally in the conversation. Analyze the chat history thoroughly, reply in the user’s voice and tone, and return only the response text without any prefixes. Vary responses each time. Here "Me: " indicates the assistant user's messages. and other user messages are shown as with their username such as "Bob345: ". keep the conversation engaging and interesting. Generate your response for Me: but remove the Me: prefix.`,
+      },
+      {
+        role: "user",
+        content: `${chatHistoryStr}\nMe: `,
+      },
+    ];
+
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: prompt,
+      max_tokens: 500,
+      temperature: 0.7,
+    });
+
+    const generatedMessage = response.data.choices[0].message.content.trim();
+    return generatedMessage;
+  } catch (error) {
+    console.error("Error generating message:", error);
+    throw new Error("Failed to generate message.");
+  }
+};
+
 module.exports = {
   moderateContent,
   censorContent,
   preprocessText,
+  generateMessage,
 };
