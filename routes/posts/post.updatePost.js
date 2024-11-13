@@ -5,12 +5,7 @@ const newPostModel = require('../../models/postModel');
 
 router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
   const { postId } = req.params;
-  const { imageFlag } = req.body;
-
-  // Check if imageFlag is present in the request body
-  if (typeof imageFlag === 'undefined') {
-    return res.status(400).json({ error: "imageFlag is required in the request body" });
-  }
+  const { imageFlag, content } = req.body;
 
   try {
     const post = await newPostModel.findById(postId);
@@ -18,8 +13,12 @@ router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    // Update the imageFlag field
-    post.imageFlag = imageFlag;
+    if (typeof imageFlag !== 'undefined') {
+      post.imageFlag = imageFlag;
+    }
+    if (typeof content !== 'undefined') {
+      post.content = content;
+    }
     await post.save();
 
     res.status(200).json({ msg: "Post flag updated successfully", post });
