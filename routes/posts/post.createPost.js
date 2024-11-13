@@ -6,7 +6,7 @@ const verifyToken = require('../../user-middleware/auth');
 const moderationMiddleware = require('../../user-middleware/moderationMiddleware');
 
 router.post('/posts/createPost', verifyToken, moderationMiddleware, async (req, res) => {
-  const { content, imageUri } = req.body;
+  const { content, imageUri, imageFlag } = req.body;
   const { id, username } = req.user;
 
   try {
@@ -20,6 +20,7 @@ router.post('/posts/createPost', verifyToken, moderationMiddleware, async (req, 
       content: content,
       imageUri: imageUri,
       hasOffensiveText: hasOffensiveText,
+      imageFlag: imageFlag || false,
     });
     // Save the post
     await newPostModel.create(createNewPost);
@@ -28,6 +29,7 @@ router.post('/posts/createPost', verifyToken, moderationMiddleware, async (req, 
       msg: 'Post created successfully',
       censored: contentWasCensored,
       content: content,
+      post: createNewPost
     });
   } catch (err) {
     console.error('Error creating post:', err);
