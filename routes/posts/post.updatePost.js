@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../../user-middleware/auth');
 const newPostModel = require('../../models/postModel');
+const moderationMiddleware = require('../../user-middleware/moderationMiddleware');
 
-router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
+router.put('/posts/updatePost/:postId', verifyToken, moderationMiddleware, async (req, res) => {
   const { postId } = req.params;
   const { isSensitive, content } = req.body;
 
@@ -13,18 +14,30 @@ router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
+    // Check if the content was censored by the moderation middleware
+    const contentWasCensored = req.censored;
+    const hasOffensiveText = req.hasOffensiveText;
+
+    // Update post fields
     if (typeof isSensitive !== 'undefined') {
       post.isSensitive = isSensitive;
     }
     if (typeof content !== 'undefined') {
       post.content = content;
+      post.hasOffensiveText = hasOffensiveText; // Set offensive flag
     }
     await post.save();
 
-    res.status(200).json({ msg: "Post flag updated successfully", post });
+    // Send response, informing if content was censored
+    res.status(200).json({
+      msg: "Post updated successfully",
+      censored: contentWasCensored,
+      content: post.content,
+      post
+    });
   } catch (err) {
-    console.error('Error updating post flag:', err);
-    res.status(500).json({ error: 'Error updating post flag' });
+    console.error('Error updating post:', err);
+    res.status(500).json({ error: 'Error updating post' });
   }
 });
 
