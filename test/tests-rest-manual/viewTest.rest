@@ -7,6 +7,6 @@ POST http://localhost:8095/views/increase
 Content-Type: application/json
 
 {
-    "userId": "67056520483bd77599e198fd",
+    "userId": "6705644d483bd77599e1982f",
     "postId": "67056461483bd77599e19838"
 }

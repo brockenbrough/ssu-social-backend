@@ -34,7 +34,7 @@ router.post('/views/increase', async (req, res) => {
 
         if (existingView) {
             // If user already viewed the post, do not increase the view count
-            return res.status(200).json({ message: ' ' });
+            return res.status(200).json({ message: 'Unique View Already Exists' });
         }
 
         // If user hasn't viewed the post yet, create a new view
