@@ -43,21 +43,16 @@ const obfuscationChars = Object.keys(obfuscationMap)
 // Function to reconstruct words where every character is separated by spaces
 const reconstructSpacedWords = (text) => {
   const charClass = `[a-zA-Z${obfuscationChars}]`;
-  // Match words where every character is separated by spaces, with at least 3 characters
+  
+  // Regex to match words with at least 3 characters, each separated by one or more spaces
   const regex = new RegExp(
-    `\\b(${charClass})(?:\\s+${charClass}){2,}\\b`,
+    `\\b(${charClass})\\s+(${charClass})\\s+(${charClass})(?:\\s+(${charClass}))*\\b`,
     "gi"
   );
+  
   return text.replace(regex, (match) => {
-    // Ensure we're only matching letters, obfuscated chars, and spaces
-    if (
-      /^([a-zA-Z${obfuscationChars}]\\s+)+[a-zA-Z${obfuscationChars}]$/.test(
-        match
-      )
-    ) {
-      return match.replace(/\s+/g, "");
-    }
-    return match;
+    // Remove all whitespace between characters to reconstruct the word
+    return match.replace(/\s+/g, "");
   });
 };
 
@@ -105,7 +100,7 @@ const censorContent = async (text, customFlaggedWords) => {
       {
         role: "system",
         content: `
-You are a content moderation assistant. Your task is to review user input text and censor any disallowed content, including profanity, inappropriate language, and ${customWordsList}, regardless of obfuscation techniques such as added spaces between letters, substitution with numbers or special characters, or any other methods to bypass filters. 
+You are a content moderation assistant. Your task is to review user input text and censor profanity and ${customWordsList}, regardless of obfuscation techniques such as added spaces between letters, substitution with numbers or special characters, or any other methods to bypass filters. 
 
 For each detected disallowed word, replace every character of that word with asterisks (*), but preserve the original punctuation and spacing of acceptable content. Do not alter any acceptable content. Do not alter URLs, links, email addresses. 
 

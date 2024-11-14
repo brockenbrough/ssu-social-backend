@@ -1,4 +1,7 @@
 const express = require("express");
+const moderationMiddleware = require("../user-middleware/moderationMiddleware");
+const verifyToken = require("../user-middleware/auth");
+const mongoose = require("mongoose");
 
 // CommentRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -15,8 +18,8 @@ commentRoutes.post("/comments/comment/reply/:id", async (req, res) => {
 
   if (!id && !commentContent) return res.status(403).json("Please provide the required fields");
   const data = await comment.findById(id).then(e => e)
-  
-    if(!data) return res.status(404).json('User does not exist')
+
+  if (!data) return res.status(404).json('User does not exist')
 
   comment.findByIdAndUpdate(
     id,
@@ -24,7 +27,7 @@ commentRoutes.post("/comments/comment/reply/:id", async (req, res) => {
     { upsert: true }
   ).then(e => {
 
-      return res.status(200).json(e)
+    return res.status(200).json(e)
   }).then(e => {
     return e
   })
@@ -33,7 +36,7 @@ commentRoutes.post("/comments/comment/reply/:id", async (req, res) => {
 // This section will help you get a list of all the comments.
 commentRoutes.get("/comment", (req, res) => {
   comment.find()
-  .then((comments) => res.json(comments))
+    .then((comments) => res.json(comments))
     .catch((err) =>
       res.status(404).json({ commentsfound: "No comments found" })
     );
@@ -48,23 +51,41 @@ commentRoutes.get("/comments/comment/:id", (req, res) => {
     );
 });
 
-commentRoutes.get("/comments/comment/getCommentById/:postId", async (req,res) => {
-  comment.find({postId: req.params.postId})
-  .then (comment => res.status(200).json(comment))
-  .catch((err)=>
-    res.status(404).json({ commentnotfound : "No comment found"})
-  );
+commentRoutes.get("/comments/comment/getCommentById/:postId", async (req, res) => {
+  comment.find({ postId: req.params.postId })
+    .then(comment => res.status(200).json(comment))
+    .catch((err) =>
+      res.status(404).json({ commentnotfound: "No comment found" })
+    );
 })
 
-
-
 // This section will help you create a new comment.
-commentRoutes.post("/comments/comment/add", (req, res) => {
-  comment.create(req.body)
-    .then((comment) => res.json({ msg: "Comment added" }))
-    .catch((err) =>
-      res.status(400).json({ error: "Unable to add this comment" })
-    );
+commentRoutes.post("/comments/comment/add", verifyToken, moderationMiddleware, async (req, res) => {
+  const { commentContent, postId } = req.body;
+  const { id, username } = req.user;
+
+  try {
+    const contentWasCensored = req.censored;
+
+    const createNewComment = comment({
+      userId: mongoose.Types.ObjectId(id),
+      postId: postId,
+      commentContent: commentContent,
+      username: username,
+    });
+    console.log("New comment: ", createNewComment);
+    await createNewComment.save();
+
+    res.json({
+      msg: 'Comment created successfully',
+      censored: contentWasCensored,
+      content: commentContent,
+      newComment: createNewComment
+    });
+  } catch (err) {
+    console.error('Error creating comment', err);
+    res.status(500).json({ error: 'Could not create comment' });
+  }
 });
 
 // This section will help you update a comment by id.

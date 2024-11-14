@@ -1,4 +1,3 @@
-// moderationMiddleware.js
 const {
   moderateContent,
   censorContent,
@@ -8,19 +7,20 @@ const customFlaggedWords = require("../utilities/customFlags"); // Ensure these 
 
 const moderationMiddleware = async (req, res, next) => {
   try {
-    const { content } = req.body;
+    // Use `content` if available; otherwise, fallback to `commentContent`
+    const textToModerate = req.body.content || req.body.commentContent;
 
-    if (!content) {
+    // If neither content field is provided, proceed to the next middleware
+    if (!textToModerate) {
       return next();
     }
 
     // Preprocess the text
-    const preProcessedText = preprocessText(content);
+    const preProcessedText = preprocessText(textToModerate);
 
     // Perform content moderation using OpenAI Moderation API
     const moderationResult = await moderateContent(preProcessedText);
 
-    
     const severeCategories = [
       "hate",
       "hate/threatening",
@@ -32,14 +32,12 @@ const moderationMiddleware = async (req, res, next) => {
     ];
 
     const { categories } = moderationResult; // categories is an object with category flags
-
     const isSevere = severeCategories.some((category) => categories[category]);
 
     if (isSevere) {
       // Reject the content and send an error response
       return res.status(400).json({
-        error:
-          "Your content contains disallowed content and cannot be submitted.",
+        error: "Your content contains disallowed content and cannot be submitted.",
         categories: severeCategories.filter((category) => categories[category]),
       });
     }
@@ -47,21 +45,21 @@ const moderationMiddleware = async (req, res, next) => {
     // Censor the content using OpenAI Chat Completion API
     const censoredContent = await censorContent(preProcessedText, customFlaggedWords);
 
-    // Update the content in the request body with the censored text
-    req.body.content = censoredContent;
+    // Update the appropriate field in the request body with the censored text
+    if (req.body.content) {
+      req.body.content = censoredContent;
+    } else if (req.body.commentContent) {
+      req.body.commentContent = censoredContent;
+    }
 
     // Attach the moderation result and censorship flag to the request object
     req.moderation = moderationResult;
-    req.censored = content !== censoredContent;
-
-    req.hasOffensiveText = req.censored;
+    req.censored = textToModerate !== censoredContent;
 
     next();
   } catch (error) {
     console.error("Error in moderation middleware:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred during content moderation." });
+    res.status(500).json({ error: "An error occurred during content moderation." });
   }
 };
 
