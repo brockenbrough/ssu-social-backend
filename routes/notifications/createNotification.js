@@ -4,7 +4,6 @@ const notificationModel = require("../../models/notificationModel");
 const userModel = require("../../models/userModel");
 const postModel = require("../../models/postModel");
 const verifyToken = require("../../user-middleware/auth");
-const { use } = require("chai");
 
 const isValidData = async (data) => {
   if (!data.type || !data.text || !data.username || !data.actionUsername) {
@@ -98,10 +97,30 @@ router.post("/notification/", verifyToken, async (req, res) => {
   });
 
   try {
+    const existingNotification = await notificationModel.findOne({
+      type,
+      text,
+      username,
+      actionUsername,
+      postId,
+    });
+
+    if (existingNotification) {
+      return res
+        .status(201)
+        .json({
+          id: existingNotification._id,
+          existed: true,
+          msg: "Notification already exists",
+        });
+    }
+
     const response = await notificationModel.create(notification);
-    res
-      .status(201)
-      .json({ id: response._id, msg: "Notification created successfully" });
+    res.status(201).json({
+      id: response._id,
+      existed: false,
+      msg: "Notification created successfully",
+    });
   } catch (err) {
     console.error("Error creating notification:", err);
     res.status(500).json({ error: "Could not create post" });
