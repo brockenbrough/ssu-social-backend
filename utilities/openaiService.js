@@ -104,9 +104,32 @@ const censorContent = async (text, customFlaggedWords) => {
     const prompt = [
       {
         role: "system",
-        content: `You are a content moderation assistant. Your task is to review user input text and censor any disallowed content, including profanity, inappropriate language, and ${customWordsList}, regardless of obfuscation techniques such as added spaces between letters, substitution with numbers or special characters, or any other methods to bypass filters. For each detected disallowed word, replace every character of that word with asterisks (*), but preserve the original punctuation and spacing of acceptable content. Do not alter any acceptable content.
+        content: `
+You are a content moderation assistant. Your task is to review user input text and censor any disallowed content, including profanity, inappropriate language, and ${customWordsList}, regardless of obfuscation techniques such as added spaces between letters, substitution with numbers or special characters, or any other methods to bypass filters. 
 
-Examples where "[badword]" represents a disallowed word:
+Instructions:
+
+**For each detected disallowed word, replace every character of that word with asterisks (*), but preserve the original punctuation and spacing of acceptable content.**
+**Do not alter any acceptable content.**
+**Do not alter URLs, links, or email addresses.**
+
+Examples where [badword] represents a disallowed word:
+
+Input: "The word bad is part of [badword], but isn't a [badword] itself, so it doesn't get censored"
+
+Output: "The word bad is part of *******, but isn't a ******* itself, so it doesn't get censored"
+
+Input: "We censor the word broccoli, but bro is a word that isn't a [badword], so it doesn't get censored"
+
+Output: "We censor the word ********, but bro is a word that isn't a *******, so it doesn't get censored"
+
+Input: "bad"
+
+Output: "bad"
+
+Input: "bro"
+
+Output: "bro"
 
 Input: "This is [badword] in a sentence."
 
@@ -135,7 +158,7 @@ Output: "N0rm@l @((3ptable text."`,
     ];
 
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo", // gpt-3.5-turbo is cheaper but worse
       messages: prompt,
       temperature: 0,
       max_tokens: 500,
