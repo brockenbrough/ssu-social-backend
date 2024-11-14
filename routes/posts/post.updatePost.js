@@ -5,7 +5,7 @@ const newPostModel = require('../../models/postModel');
 
 router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
   const { postId } = req.params;
-  const { imageFlag, content } = req.body;
+  const { isSensitive, content } = req.body;
 
   try {
     const post = await newPostModel.findById(postId);
@@ -13,8 +13,8 @@ router.put('/posts/updatePost/:postId', verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    if (typeof imageFlag !== 'undefined') {
-      post.imageFlag = imageFlag;
+    if (typeof isSensitive !== 'undefined') {
+      post.isSensitive = isSensitive;
     }
     if (typeof content !== 'undefined') {
       post.content = content;
