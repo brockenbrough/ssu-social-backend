@@ -1,3 +1,7 @@
+// textToModerate and its functionality could possibly be improved 
+// something like fieldsToModerate = ['content', 'commentContent', 'biography'];
+// then loop through fieldsToModerate
+
 const {
   moderateContent,
   censorContent,
@@ -8,7 +12,7 @@ const customFlaggedWords = require("../utilities/customFlags"); // Ensure these 
 const moderationMiddleware = async (req, res, next) => {
   try {
     // Use `content` if available; otherwise, fallback to `commentContent`
-    const textToModerate = req.body.content || req.body.commentContent;
+    const textToModerate = req.body.content || req.body.commentContent || req.body.biography;
 
     // If neither content field is provided, proceed to the next middleware
     if (!textToModerate) {
@@ -50,6 +54,8 @@ const moderationMiddleware = async (req, res, next) => {
       req.body.content = censoredContent;
     } else if (req.body.commentContent) {
       req.body.commentContent = censoredContent;
+    } else if (req.body.biography) {
+      req.body.biography = censoredContent;
     }
 
     // Attach the moderation result and censorship flag to the request object

@@ -129,6 +129,10 @@ Input: "bro"
 
 Output: "bro"
 
+Input: "This"
+
+Output: "This"
+
 Input: "This is [badword] in a sentence."
 
 Output: "This is ******* in a sentence."
