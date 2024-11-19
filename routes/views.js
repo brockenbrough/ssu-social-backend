@@ -8,16 +8,17 @@ router.get('/views/:postId', async (req, res) => {
     const { postId } = req.params;
     
     try {
-        // Find all views for the given postId
-        const views = await View.find({ postId });
+        // Count views for the given postId
+        const viewCount = await View.countDocuments({ postId });
 
-        // Return the views
-        res.status(200).json(views);
+        // Return the view count
+        res.status(200).json({ viewCount });
     } catch (error) {
         // Handle any errors during the query
-        res.status(500).json({ message: 'Server error. Could not retrieve views.', error });
+        res.status(500).json({ message: 'Server error. Could not retrieve view count.', error });
     }
 });
+
 
 //
 // Route to increase views on a post
@@ -33,18 +34,18 @@ router.post('/views/increase', async (req, res) => {
         const existingView = await View.findOne({ userId, postId });
 
         if (existingView) {
-            // If user already viewed the post, do not increase the view count
             return res.status(200).json({ message: 'Unique View Already Exists' });
         }
 
-        // If user hasn't viewed the post yet, create a new view
+        // Create a new view if the user hasn't viewed it yet
         const newView = new View({ userId, postId });
         await newView.save();
 
+        return res.status(201).json({ message: 'View added successfully.' }); // Respond with success
     } catch (error) {
-        // Handle any errors during the process
         res.status(500).json({ message: 'Server error. Could not increase views.', error });
     }
 });
+
 
 module.exports = router;

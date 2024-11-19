@@ -1,6 +1,31 @@
 ###
-GET http://localhost:8095/views/67056461483bd77599e19838
+GET http://localhost:8095/views/670564c6483bd77599e198d3
 Content-Type: application/json
+
+###
+GET http://localhost:8095/views/670564e3483bd77599e198e8
+Content-Type: application/json
+
+//Samsara's view
+###
+POST http://localhost:8095/views/increase
+Content-Type: application/json
+
+{
+    "userId": "6705644d483bd77599e1982f",
+    "postId": "670564c6483bd77599e198d3"
+}
+
+//gobblgabble's view
+###
+POST http://localhost:8095/views/increase
+Content-Type: application/json
+
+{
+    "userId": "67056520483bd77599e198fd",
+    "postId": "670564c6483bd77599e198d3"
+}
+
 
 ###
 POST http://localhost:8095/views/increase
@@ -8,5 +33,5 @@ Content-Type: application/json
 
 {
     "userId": "6705644d483bd77599e1982f",
-    "postId": "67056461483bd77599e19838"
+    "postId": "670564e3483bd77599e198e8"
 }
