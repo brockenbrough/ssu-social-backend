@@ -32,7 +32,7 @@ const deleteImageFromS3 = async (imageUri) => {
 
 router.delete("/posts/deletePost/:postId", verifyToken, async (req, res) => {
   const { postId } = req.params;
-  const { id } = req.user;
+  const { id, role } = req.user;
 
   try {
     const post = await newPostModel.findById(postId);
@@ -41,8 +41,8 @@ router.delete("/posts/deletePost/:postId", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "No Post found" });
     }
 
-    // Ensure the post belongs to the user
-    if (post.userId.toString() !== id) {
+    // Checks if the post belongs to the owner or user has the "admin" role before deleting
+    if (post.userId.toString() !== id && role !== "admin" ) {
       return res
         .status(403)
         .json({ error: "Unauthorized to delete this post" });
