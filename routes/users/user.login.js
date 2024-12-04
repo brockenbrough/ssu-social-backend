@@ -1,18 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const z = require('zod')
-const bcrypt = require('bcrypt')
-const { userLoginValidation } = require('../../models/userValidator')
-const newUserModel = require('../../models/userModel')
-const { generateAccessToken } = require('../../utilities/generateToken')
+const z = require("zod");
+const bcrypt = require("bcrypt");
+const { userLoginValidation } = require("../../models/userValidator");
+const newUserModel = require("../../models/userModel");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../../utilities/generateToken");
 
-
-router.post('/user/login', async (req, res) => {
-
+router.post("/user/login", async (req, res) => {
   const { error } = userLoginValidation(req.body);
   if (error) return res.status(400).send({ message: error.errors[0].message });
 
-  const { username, password } = req.body
+  const { username, password } = req.body;
 
   const user = await newUserModel.findOne({ username: username });
 
@@ -23,10 +24,7 @@ router.post('/user/login', async (req, res) => {
       .send({ message: "email or password does not exists, try again" });
 
   //check if the password is correct or not
-  const checkPasswordValidity = await bcrypt.compare(
-    password,
-    user.password
-  );
+  const checkPasswordValidity = await bcrypt.compare(password, user.password);
 
   if (!checkPasswordValidity)
     return res
@@ -34,9 +32,23 @@ router.post('/user/login', async (req, res) => {
       .send({ message: "email or password does not exists, try again" });
 
   //create json web token if authenticated and send it back to client in header where it is stored in localStorage ( might not be best practice )
-  const accessToken = generateAccessToken(user.id, user.email, user.username, user.role)
+  const accessToken = generateAccessToken(
+    user.id,
+    user.email,
+    user.username,
+    user.role
+  );
+  const refreshToken = generateRefreshToken(
+    user.id,
+    user.email,
+    user.username,
+    user.role
+  );
 
-  res.header('Authorization', accessToken).send({ accessToken: accessToken })
-})
+  res.status(200).json({
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+  });
+});
 
 module.exports = router;
