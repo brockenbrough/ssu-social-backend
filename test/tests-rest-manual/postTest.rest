@@ -118,4 +118,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTJiMGE3N
   "imageUri": "60d21b4667d0d8992e610c85"
 }
 
+// Post with a Sensitive Image 
 ###
+POST http://localhost:8095/posts/createPost
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjZmYjc2NzdjZGNkODAxYWRlM2UzNiIsImVtYWlsIjoiZW1haWxAZ21haWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ1c2VybmFtZTIiLCJpYXQiOjE3Mjc0NjQyNzMsImV4cCI6MTcyNzQ2Nzg3M30.cgff-lYByEQAkhwVn6q3yF5axIoCLEvzslih1eaqQlA
+
+{
+  "content": "This is a test post with a sensitive image.",
+  "imageUri": "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
+  "isSensitive": false
+}
+
+// Post with an Offensive Image 
+###
+POST http://localhost:8095/posts/localhost:8095/posts/createPost
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjZmYjc2NzdjZGNkODAxYWRlM2UzNiIsImVtYWlsIjoiZW1haWxAZ21haWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ1c2VybmFtZTIiLCJpYXQiOjE3Mjc0NjQyNzMsImV4cCI6MTcyNzQ2Nzg3M30.cgff-lYByEQAkhwVn6q3yF5axIoCLEvzslih1eaqQlA
+
+{
+  "content": "This is a test post with an offensive image.",
+  "imageUri": "https://eecsnews.engin.umich.edu/wp-content/uploads/sites/2/2023/07/Hate-speech_featured-1024x680.jpg",
+  "isSensitive": false
+}

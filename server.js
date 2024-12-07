@@ -18,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // Import routes
+app.use(require("./routes/smartPostSearchRoute"))
 app.use(require("./routes/project_notes"));
 app.use(require("./routes/comments"));
 app.use(require("./routes/feed"));

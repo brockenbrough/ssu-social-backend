@@ -1,0 +1,49 @@
+POST http://localhost:8095/smartPostSearch/66f79cf1f1211754f908a172
+Content-Type: application/json
+userId: 66f79cf1f1211754f908a172
+
+{
+    
+}
+
+###
+POST http://localhost:8095/smartPostSearch/66f79cf1f1211754f908a172
+Content-Type: application/json
+userId: 66f79cf1f1211754f908a172
+
+{
+    "query": ""
+}
+
+###
+POST http://localhost:8095/smartPostSearch/66f79cf1f1211754f908a172
+Content-Type: application/json
+
+{
+    "query": "semester"
+}
+
+###
+POST http://localhost:8095/smartPostSearch/66f79cf1f1211754f908a172
+Content-Type: application/json
+
+{
+    "query": "health"
+}
+
+###
+POST http://localhost:8095/smartPostSearch/66f79cf1f1211754f908a172
+Content-Type: application/json
+
+{
+    "query": ""
+}
+
+
+###
+POST http://localhost:8095/smartPostSearch/66f79cf1f1211754f908a172
+Content-Type: application/json
+
+{
+    "query": "care"
+}
