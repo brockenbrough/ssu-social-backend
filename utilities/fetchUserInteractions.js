@@ -13,7 +13,6 @@ async function fetchUserInteractions(userId) {
             throw new Error("User ID is required to fetch user interactions.");
         }
 
-        // Execute all database queries in parallel using Promise.all
         const [likesResult, commentsResult, followingsResult] = await Promise.all([
             fetchLikes(userId),
             fetchComments(userId),
