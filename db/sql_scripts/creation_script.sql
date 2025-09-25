@@ -1,8 +1,8 @@
 -- Drop the app_users table if it exists
-DROP TABLE IF EXISTS app_users;
+DROP TABLE IF EXISTS ssu_users;
 
--- Create the app_users table
-CREATE TABLE app_users (
+-- Create the ssu_users table
+CREATE TABLE ssu_users (
   user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   username VARCHAR(64) NOT NULL UNIQUE,
   email VARCHAR(255) NOT NULL UNIQUE,
