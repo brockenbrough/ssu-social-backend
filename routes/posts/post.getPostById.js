@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const newPostModel = require('../../models/postModel')
 
+
 router.get("/posts/getPostById/:postId", async (req, res) => {
   const { postId } = req.params
 
